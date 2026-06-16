@@ -702,6 +702,10 @@
       color: #3b82f6;
     }
 
+    .history-item.hi-correct .hi-hint {
+      color: #10b981;
+    }
+
     /* Score card */
     .score-row {
       display: flex;
@@ -955,9 +959,9 @@
        HEADER
   ═══════════════════════════════════ -->
     <header>
-      <div class="game-badge">🎯 &nbsp; NUMBER QUEST</div>
-      <h1>Tebak Angka<br />99 Level Challenge</h1>
-      <p>Pilih mode kesulitan dan uji kemampuan menebakmu!</p>
+      <div class="game-badge">🧮 &nbsp; MATH QUEST</div>
+      <h1>Kuis Matematika<br />99 Level Challenge</h1>
+      <p>Pilih mode kesulitan dan jawab tantangan penjumlahan, pengurangan, dan perkalian!</p>
     </header>
 
     <!-- ═══════════════════════════════════
@@ -971,33 +975,33 @@
           <button class="mode-btn" data-mode="easy" id="btn-mode-easy">
             <div class="mode-icon">🌱</div>
             <div class="mode-name">Mudah</div>
-            <div class="mode-desc">Rentang angka lebih sempit, percobaan banyak. Cocok untuk pemula!</div>
+            <div class="mode-desc">Operasi sederhana, batas angka sampai 50, percobaan banyak. Cocok untuk belajar!</div>
             <div class="mode-tags">
-              <span class="tag">Rentang: 1–50</span>
+              <span class="tag">Angka: ≤ 50</span>
               <span class="tag">10 Percobaan</span>
-              <span class="tag">Hint aktif</span>
+              <span class="tag">Penjumlahan & Pengurangan</span>
             </div>
           </button>
 
           <button class="mode-btn" data-mode="medium" id="btn-mode-medium">
             <div class="mode-icon">🔥</div>
             <div class="mode-name">Menengah</div>
-            <div class="mode-desc">Rentang lebih luas, percobaan terbatas. Butuh strategi!</div>
+            <div class="mode-desc">Batas angka sampai 75, operasi mulai bervariasi dengan perkalian sederhana.</div>
             <div class="mode-tags">
-              <span class="tag">Rentang: 1–150</span>
+              <span class="tag">Angka: ≤ 75</span>
               <span class="tag">7 Percobaan</span>
-              <span class="tag">Hint terbatas</span>
+              <span class="tag">Tambah, Kurang, Kali</span>
             </div>
           </button>
 
           <button class="mode-btn" data-mode="hard" id="btn-mode-hard">
             <div class="mode-icon">💀</div>
             <div class="mode-name">Susah</div>
-            <div class="mode-desc">Rentang sangat luas, percobaan minimal. Untuk para master!</div>
+            <div class="mode-desc">Batas angka sampai 125 dengan kombinasi perkalian yang menantang!</div>
             <div class="mode-tags">
-              <span class="tag">Rentang: 1–300</span>
+              <span class="tag">Angka: ≤ 125</span>
               <span class="tag">5 Percobaan</span>
-              <span class="tag">No hint</span>
+              <span class="tag">Kombinasi Operasi</span>
             </div>
           </button>
 
@@ -1074,8 +1078,7 @@
         <!-- LEFT: Main game -->
         <div>
           <div class="number-display card">
-            <div class="range-hint">Angka ada di antara <span id="range-min">1</span> dan <span
-                id="range-max">100</span></div>
+            <div class="range-hint" id="question-container">Selesaikan Soal: <span id="math-expression" style="font-size: 2.2rem; display: block; margin-top: 10px; font-weight: 900; color: #a5b4fc; font-family: 'JetBrains Mono', monospace; letter-spacing: 2px;">?</span></div>
 
             <div class="attempt-visual" id="hearts-row"></div>
 
@@ -1178,8 +1181,7 @@
         name: 'Mudah',
         icon: '🌱',
         color: '#10b981',
-        baseMax: 50,
-        maxIncrease: 5,       // +5 per level
+        maxNumber: 50,
         maxAttempts: 10,
         scoreBase: 100,
         scoreMulti: 1.0,
@@ -1189,19 +1191,17 @@
         name: 'Menengah',
         icon: '🔥',
         color: '#f59e0b',
-        baseMax: 150,
-        maxIncrease: 15,
+        maxNumber: 75,
         maxAttempts: 7,
         scoreBase: 250,
         scoreMulti: 1.5,
-        showHint: true        // hint: "dekat" / "jauh"
+        showHint: true
       },
       hard: {
         name: 'Susah',
         icon: '💀',
         color: '#ef4444',
-        baseMax: 300,
-        maxIncrease: 30,
+        maxNumber: 125,
         maxAttempts: 5,
         scoreBase: 500,
         scoreMulti: 2.5,
@@ -1282,10 +1282,52 @@
     // ═══════════════════════════════════════════════════════
     // LEVEL RANGE
     // ═══════════════════════════════════════════════════════
-    function getLevelRange(mode, level) {
+    function generateMathQuestion(mode, level) {
       const cfg = MODES[mode];
-      const max = cfg.baseMax + (level - 1) * cfg.maxIncrease;
-      return { min: 1, max };
+      // Max value scaling linearly up to level limit
+      const minLimit = mode === 'easy' ? 10 : (mode === 'medium' ? 15 : 20);
+      const maxLimit = cfg.maxNumber;
+      const currentMax = Math.round(minLimit + (level - 1) * (maxLimit - minLimit) / 98);
+
+      let num1, num2, op, result;
+      let attempts = 0;
+      
+      let ops = ['+'];
+      if (level > 3) ops.push('-');
+      if (mode === 'medium' && level > 10) ops.push('*');
+      if (mode === 'hard' && level > 5) ops.push('*');
+
+      while (attempts < 100) {
+        op = ops[Math.floor(Math.random() * ops.length)];
+        if (op === '+') {
+          num1 = Math.floor(Math.random() * (currentMax - 2)) + 1;
+          num2 = Math.floor(Math.random() * (currentMax - num1 - 1)) + 1;
+          result = num1 + num2;
+        } else if (op === '-') {
+          num1 = Math.floor(Math.random() * (currentMax - 2)) + 2;
+          num2 = Math.floor(Math.random() * (num1 - 1)) + 1;
+          result = num1 - num2;
+        } else if (op === '*') {
+          // simple multiplication where product <= currentMax
+          let maxFactor = Math.floor(Math.sqrt(currentMax));
+          if (maxFactor < 2) maxFactor = 2;
+          num1 = Math.floor(Math.random() * (maxFactor - 1)) + 2;
+          let maxFactor2 = Math.floor(currentMax / num1);
+          if (maxFactor2 < 2) maxFactor2 = 2;
+          num2 = Math.floor(Math.random() * (maxFactor2 - 1)) + 2;
+          result = num1 * num2;
+        }
+
+        if (result > 0 && result <= currentMax && num1 <= currentMax && num2 <= currentMax) {
+          break;
+        }
+        attempts++;
+      }
+
+      return {
+        expression: `${num1} ${op === '*' ? '×' : op} ${num2}`,
+        answer: result
+      };
     }
 
     // ═══════════════════════════════════════════════════════
@@ -1347,12 +1389,12 @@
     // ═══════════════════════════════════════════════════════
     function startGame(mode, level) {
       const cfg = MODES[mode];
-      const { min, max } = getLevelRange(mode, level);
-      const secret = Math.floor(Math.random() * (max - min + 1)) + min;
+      const q = generateMathQuestion(mode, level);
+      const secret = q.answer;
 
       state = {
         mode, level, secret,
-        min, max,
+        expression: q.expression,
         attempts: 0,
         maxAttempts: cfg.maxAttempts,
         score: 0,
@@ -1373,8 +1415,7 @@
       $('stat-attempt').textContent = '0';
       $('stat-done').textContent = getCompletedLevels(mode).length;
 
-      $('range-min').textContent = min;
-      $('range-max').textContent = max;
+      $('math-expression').textContent = q.expression;
 
       $('prog-fill').style.width = ((level - 1) / TOTAL_LEVELS * 100).toFixed(1) + '%';
 
@@ -1387,8 +1428,6 @@
 
       const input = $('guess-input');
       input.value = '';
-      input.min = min;
-      input.max = max;
       input.disabled = false;
       $('submit-btn').disabled = false;
       input.focus();
@@ -1446,11 +1485,6 @@
       const val = parseInt(input.value);
 
       if (isNaN(val)) { shakeInput(); showToast('⚠️ Masukkan angka yang valid!'); return; }
-      if (val < state.min || val > state.max) {
-        shakeInput();
-        showToast('⚠️ Angka harus antara ' + state.min + ' dan ' + state.max + '!');
-        return;
-      }
 
       state.attempts++;
       input.value = '';
@@ -1485,9 +1519,9 @@
       state.history.unshift({ val, dir });
 
       const item = document.createElement('div');
-      item.className = 'history-item ' + (dir === 'too-high' ? 'hi-high' : 'hi-low');
+      item.className = 'history-item ' + (dir === 'too-high' ? 'hi-high' : (dir === 'correct' ? 'hi-correct' : 'hi-low'));
 
-      const arrow = dir === 'too-high' ? '↓ Terlalu tinggi' : (dir === 'correct' ? '✓ Tepat!' : '↑ Terlalu rendah');
+      const arrow = dir === 'too-high' ? '↓ Terlalu besar' : (dir === 'correct' ? '✓ Tepat!' : '↑ Terlalu kecil');
       item.innerHTML = `<span class="hi-num">${val}</span><span class="hi-hint">${arrow}</span>`;
 
       list.insertBefore(item, list.firstChild);
@@ -1503,17 +1537,17 @@
 
       if (type === 'too-high') {
         icon = '⬇️';
-        msg = val + ' terlalu <strong>tinggi</strong>! Coba lebih kecil.';
-        if (cfg.showHint && state.mode === 'medium') {
+        msg = val + ' terlalu <strong>besar</strong>! Hasil yang benar lebih kecil.';
+        if (cfg.showHint) {
           const diff = val - state.secret;
-          msg += diff <= 10 ? ' <em>(sangat dekat!)</em>' : diff <= 30 ? ' <em>(dekat)</em>' : ' <em>(masih jauh)</em>';
+          msg += diff <= 5 ? ' <em>(sangat dekat!)</em>' : diff <= 15 ? ' <em>(dekat)</em>' : ' <em>(masih jauh)</em>';
         }
       } else if (type === 'too-low') {
         icon = '⬆️';
-        msg = val + ' terlalu <strong>rendah</strong>! Coba lebih besar.';
-        if (cfg.showHint && state.mode === 'medium') {
+        msg = val + ' terlalu <strong>kecil</strong>! Hasil yang benar lebih besar.';
+        if (cfg.showHint) {
           const diff = state.secret - val;
-          msg += diff <= 10 ? ' <em>(sangat dekat!)</em>' : diff <= 30 ? ' <em>(dekat)</em>' : ' <em>(masih jauh)</em>';
+          msg += diff <= 5 ? ' <em>(sangat dekat!)</em>' : diff <= 15 ? ' <em>(dekat)</em>' : ' <em>(masih jauh)</em>';
         }
       }
 
