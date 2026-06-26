@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eco Guardian – Selamatkan Alam</title>
+<meta name="description" content="Game puzzle strategi lingkungan. Pulihkan ekosistem, padamkan api, selamatkan satwa, dan jaga bumi di tahun 2050.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --green: #2ecc71;
+    --dark-green: #1a7a3c;
+    --teal: #00b894;
+    --fire: #e17055;
+    --blue: #0984e3;
+    --gold: #f9ca24;
+    --dark: #0d1b2a;
+    --darker: #060e17;
+    --panel: rgba(13,27,42,0.92);
+    --glass: rgba(255,255,255,0.06);
+    --border: rgba(46,204,113,0.3);
+  }
+
+  body {
+    background: var(--darker);
+    color: #e0f7e9;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== SCREENS ===== */
+  .screen { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; transition: opacity 0.5s; }
+  .screen.hidden { opacity:0; pointer-events:none; }
+
+  /* ===== MAIN MENU ===== */
+  #menu {
+    background: radial-gradient(ellipse at 50% 0%, #1a4a2e 0%, #060e17 70%);
+  }
+  .menu-bg-trees {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+    background: linear-gradient(to top, #0d2a18 0%, transparent 100%);
+    overflow: hidden;
+  }
+  .tree-silhouette {
+    position: absolute; bottom: 0;
+    width: 0; height: 0;
+    border-left: solid transparent;
+    border-right: solid transparent;
+    border-bottom: solid #1a4a2e;
+  }
+  .logo-wrap {
+    position: relative; z-index: 10; text-align: center; margin-bottom: 40px;
+  }
+  .logo-icon { font-size: 80px; animation: float 3s ease-in-out infinite; display:block; margin-bottom: 10px; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+  .logo-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(28px,5vw,56px);
+    font-weight: 900;
+    background: linear-gradient(135deg, #2ecc71, #00cec9, #6c5ce7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 4px;
+  }
+  .logo-sub { font-size: 14px; color: #81b59a; letter-spacing: 3px; margin-top: 6px; }
+  .story-box {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 32px;
+    max-width: 540px;
+    text-align: center;
+    color: #a8d5b8;
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 36px;
+    backdrop-filter: blur(10px);
+    position: relative; z-index: 10;
+  }
+  .story-box strong { color: #2ecc71; }
+  .btn-group { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; position: relative; z-index:10; }
+  .btn {
+    padding: 14px 36px; border: none; border-radius: 50px; cursor: pointer;
+    font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700;
+    letter-spacing: 2px; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,0.15); opacity: 0; transition: opacity 0.3s;
+  }
+  .btn:hover::before { opacity: 1; }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary { background: linear-gradient(135deg, #2ecc71, #00b894); color: #0d1b2a; }
+  .btn-secondary { background: var(--glass); color: #2ecc71; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+  .btn-danger { background: linear-gradient(135deg, #e17055, #d63031); color: #fff; }
+  .btn-small { padding: 10px 24px; font-size: 12px; }
+
+  /* ===== LEVEL SELECT ===== */
+  #level-select {
+    background: radial-gradient(ellipse at 50% 0%, #1a3a5c 0%, #060e17 70%);
+  }
+  .level-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
+    max-width: 700px; margin: 24px auto;
+  }
+  .level-card {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 12px; text-align: center;
+    cursor: pointer; transition: all 0.3s; backdrop-filter: blur(10px);
+    position: relative; overflow: hidden;
+  }
+  .level-card.locked { opacity: 0.4; cursor: not-allowed; filter: grayscale(0.6); }
+  .level-card:not(.locked):hover { border-color: #2ecc71; transform: translateY(-4px); box-shadow: 0 8px 24px rgba(46,204,113,0.2); }
+  .level-card .lnum { font-family:'Orbitron',sans-serif; font-size: 22px; font-weight:900; color:#2ecc71; }
+  .level-card .lname { font-size: 10px; color: #81b59a; margin-top: 4px; }
+  .level-card .lstars { font-size: 14px; margin-top: 6px; }
+  .level-card .llock { font-size: 24px; }
+  .level-card.active-badge { border-color: #f9ca24; }
+  .section-title {
+    font-family:'Orbitron',sans-serif; font-size: clamp(18px,3vw,28px); font-weight:700;
+    color: #2ecc71; letter-spacing: 3px; margin-bottom: 8px; text-align:center;
+  }
+  .section-sub { color: #81b59a; font-size: 13px; text-align:center; margin-bottom: 24px; }
+
+  /* ===== GAME SCREEN ===== */
+  #game { background: #060e17; padding: 0; }
+  #gameCanvas { display: block; cursor: pointer; }
+
+  /* ===== HUD ===== */
+  #hud {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+    background: linear-gradient(to bottom, rgba(6,14,23,0.95) 80%, transparent);
+    z-index: 20; flex-wrap: wrap;
+  }
+  .hud-section { display: flex; align-items: center; gap: 8px; }
+  .hud-badge {
+    background: var(--glass); border: 1px solid var(--border);
+    border-radius: 10px; padding: 6px 12px; font-size: 12px;
+    backdrop-filter: blur(8px); display:flex; align-items:center; gap:6px; white-space:nowrap;
+  }
+  .hud-badge .icon { font-size: 16px; }
+  .hud-badge .val { font-family:'Orbitron',sans-serif; font-weight:700; font-size:13px; color:#2ecc71; }
+  .hud-badge .label { color:#81b59a; font-size:10px; }
+  .timer-badge { border-color: rgba(241,196,15,0.4) !important; }
+  .timer-badge .val { color: #f9ca24 !important; }
+  .timer-badge.urgent .val { color: #e17055 !important; animation: pulse 0.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .hud-weather { font-size: 22px; }
+  #hud-missions { position:absolute; top:60px; right:16px; z-index:20; }
+  .mission-panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 14px; padding: 12px 16px; min-width: 180px;
+    backdrop-filter: blur(12px);
+  }
+  .mission-title { font-family:'Orbitron',sans-serif; font-size:11px; color:#2ecc71; letter-spacing:2px; margin-bottom:10px; }
+  .mission-item {
+    display: flex; align-items: center; gap: 8px; font-size: 12px;
+    color: #a8d5b8; margin-bottom: 7px; transition: color 0.3s;
+  }
+  .mission-item.done { color: #2ecc71; text-decoration: line-through; opacity:0.6; }
+  .mission-item .micon { font-size: 15px; min-width:20px; text-align:center; }
+  .mission-item .mprog { font-family:'Orbitron',sans-serif; font-size:11px; color:#f9ca24; margin-left:auto; }
+  #toolbar { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); z-index:20; display:flex; gap:10px; }
+  .tool-btn {
+    background: var(--panel); border: 2px solid var(--border);
+    border-radius: 14px; padding: 10px 18px; cursor:pointer;
+    font-size: 11px; color: #a8d5b8; transition: all 0.3s;
+    text-align: center; min-width: 72px; backdrop-filter: blur(12px);
+    font-family: 'Inter', sans-serif;
+  }
+  .tool-btn .ticon { font-size: 22px; display:block; margin-bottom:4px; }
+  .tool-btn:hover, .tool-btn.active {
+    border-color: #2ecc71; color: #2ecc71;
+    box-shadow: 0 0 16px rgba(46,204,113,0.3);
+    background: rgba(46,204,113,0.1);
+  }
+  .tool-btn.active { background: rgba(46,204,113,0.18); }
+  .energy-bar-wrap {
+    position: absolute; bottom: 90px; left: 50%; transform: translateX(-50%);
+    z-index: 20; display: flex; align-items: center; gap: 10px;
+  }
+  .energy-label { font-size: 11px; color: #81b59a; white-space:nowrap; }
+  .energy-bar-bg { width: 140px; height: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow:hidden; border: 1px solid var(--border); }
+  .energy-bar-fill { height:100%; background: linear-gradient(90deg,#00b894,#00cec9); border-radius:10px; transition: width 0.3s; }
+
+  /* ===== POPUP ===== */
+  .popup-overlay {
+    position: absolute; inset:0; background: rgba(6,14,23,0.85);
+    display:flex; align-items:center; justify-content:center; z-index:50;
+    backdrop-filter: blur(6px); transition: opacity 0.4s;
+  }
+  .popup-overlay.hidden { opacity:0; pointer-events:none; }
+  .popup-box {
+    background: linear-gradient(145deg, #0d2a18, #0d1b2a);
+    border: 1px solid var(--border); border-radius: 24px;
+    padding: 40px 48px; text-align: center; max-width: 460px; width: 90%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
+  .popup-icon { font-size: 72px; display:block; margin-bottom: 16px; }
+  .popup-title { font-family:'Orbitron',sans-serif; font-size: 24px; font-weight:900; color:#2ecc71; margin-bottom:8px; }
+  .popup-sub { color: #81b59a; font-size: 14px; margin-bottom: 24px; line-height:1.7; }
+  .stars-display { font-size: 40px; margin-bottom: 24px; letter-spacing: 8px; }
+  .score-display { font-family:'Orbitron',sans-serif; font-size:32px; color:#f9ca24; margin-bottom:8px; }
+  .score-label { color:#81b59a; font-size:13px; margin-bottom:28px; }
+
+  /* ===== NOTIFICATIONS ===== */
+  #notif-wrap { position:absolute; top:70px; left:16px; z-index:30; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+  .notif {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 14px; font-size: 12px; color: #e0f7e9;
+    backdrop-filter: blur(10px); display:flex; align-items:center; gap:8px;
+    animation: slideIn 0.3s ease-out;
+    max-width: 220px;
+  }
+  @keyframes slideIn { from{transform:translateX(-20px);opacity:0} to{transform:translateX(0);opacity:1} }
+  .notif.pos { border-color: rgba(46,204,113,0.5); }
+  .notif.neg { border-color: rgba(231,76,60,0.5); color: #fab1a0; }
+  .notif.info { border-color: rgba(116,185,255,0.5); color: #74b9ff; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width:6px; } ::-webkit-scrollbar-track{background:#0d1b2a} ::-webkit-scrollbar-thumb{background:#2ecc71;border-radius:3px}
+
+  /* ===== UPGRADE PANEL ===== */
+  #upgrade-panel {
+    position: absolute; left: 16px; top: 60px; z-index: 20;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 14px; padding: 12px; min-width: 140px;
+    backdrop-filter: blur(12px); display: none;
+  }
+  #upgrade-panel.show { display: block; }
+  .upg-item { display:flex; align-items:center; gap:8px; padding:7px 8px; border-radius:8px; cursor:pointer; transition:background 0.2s; font-size:11px; }
+  .upg-item:hover { background: rgba(46,204,113,0.1); }
+  .upg-item .upg-icon { font-size:18px; }
+  .upg-item .upg-name { color:#a8d5b8; flex:1; }
+  .upg-item .upg-cost { color:#f9ca24; font-family:'Orbitron',sans-serif; font-size:10px; }
+  .upg-item.bought .upg-name { color:#2ecc71; }
+  .upg-item.bought .upg-cost { color:#81b59a; }
+  .upg-panel-title { font-family:'Orbitron',sans-serif; font-size:10px; color:#2ecc71; letter-spacing:2px; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<!-- ===== MAIN MENU ===== -->
+<div id="menu" class="screen">
+  <div class="menu-bg-trees" id="menuBgTrees"></div>
+  <div class="logo-wrap">
+    <span class="logo-icon">🌿</span>
+    <div class="logo-title">ECO GUARDIAN</div>
+    <div class="logo-sub">SELAMATKAN BUMI · TAHUN 2050</div>
+  </div>
+  <div class="story-box">
+    Tahun 2050. Hutan mengalami kerusakan akibat kebakaran, penebangan liar, dan pencemaran.<br><br>
+    Bergabunglah dengan <strong>Tim Eco Guardian</strong> dan pulihkan ekosistem sebelum semuanya terlambat.<br><br>
+    <strong>Misi utamamu bukan mengalahkan musuh — melainkan mengembalikan keseimbangan alam.</strong>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="showScreen('level-select')">⚡ MULAI BERMAIN</button>
+    <button class="btn btn-secondary" onclick="showHowTo()">📖 CARA MAIN</button>
+  </div>
+</div>
+
+<!-- ===== LEVEL SELECT ===== -->
+<div id="level-select" class="screen hidden">
+  <div class="logo-wrap" style="margin-bottom:16px">
+    <div class="logo-title" style="font-size:clamp(20px,3vw,36px)">PILIH LEVEL</div>
+    <div class="logo-sub">10 misi menyelamatkan bumi</div>
+  </div>
+  <div class="level-grid" id="levelGrid"></div>
+  <button class="btn btn-secondary btn-small" onclick="showScreen('menu')" style="margin-top:8px">← Kembali</button>
+</div>
+
+<!-- ===== GAME SCREEN ===== -->
+<div id="game" class="screen hidden">
+  <!-- HUD -->
+  <div id="hud">
+    <div class="hud-badge">
+      <span class="icon">⭐</span>
+      <div><div class="val" id="hudScore">0</div><div class="label">SKOR</div></div>
+    </div>
+    <div class="hud-badge timer-badge" id="timerBadge">
+      <span class="icon">⏱</span>
+      <div><div class="val" id="hudTimer">5:00</div><div class="label">WAKTU</div></div>
+    </div>
+    <div class="hud-badge">
+      <span class="icon hud-weather" id="hudWeather">☀️</span>
+      <div><div class="val" id="hudWeatherName">CERAH</div><div class="label">CUACA</div></div>
+    </div>
+    <div class="hud-badge">
+      <span class="icon">⚡</span>
+      <div><div class="val" id="hudEnergy">100</div><div class="label">ENERGI</div></div>
+    </div>
+    <div style="margin-left:auto; display:flex; gap:8px;">
+      <button class="btn btn-secondary btn-small" onclick="togglePause()" id="btnPause">⏸ Pause</button>
+      <button class="btn btn-secondary btn-small" onclick="exitGame()">✕ Keluar</button>
+    </div>
+  </div>
+
+  <!-- Mission Panel -->
+  <div id="hud-missions">
+    <div class="mission-panel">
+      <div class="mission-title">🎯 TARGET MISI</div>
+      <div id="missionList"></div>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div id="notif-wrap"></div>
+
+  <!-- Upgrade Panel -->
+  <div id="upgrade-panel">
+    <div class="upg-panel-title">🔬 UPGRADE</div>
+    <div id="upgList"></div>
+  </div>
+
+  <!-- Energy bar -->
+  <div class="energy-bar-wrap">
+    <span class="energy-label">⚡ ENERGI</span>
+    <div class="energy-bar-bg"><div class="energy-bar-fill" id="energyFill" style="width:100%"></div></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div id="toolbar">
+    <div class="tool-btn active" onclick="selectTool('plant')" id="tool-plant">
+      <span class="ticon">🌱</span>Tanam
+    </div>
+    <div class="tool-btn" onclick="selectTool('water')" id="tool-water">
+      <span class="ticon">💧</span>Padamkan
+    </div>
+    <div class="tool-btn" onclick="selectTool('rescue')" id="tool-rescue">
+      <span class="ticon">🦌</span>Selamatkan
+    </div>
+    <div class="tool-btn" onclick="selectTool('clean')" id="tool-clean">
+      <span class="ticon">🧤</span>Bersihkan
+    </div>
+    <div class="tool-btn" onclick="toggleUpgradePanel()" id="tool-upgrade">
+      <span class="ticon">⬆️</span>Upgrade
+    </div>
+  </div>
+
+  <!-- Canvas -->
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- Pause Overlay -->
+  <div class="popup-overlay hidden" id="pauseOverlay">
+    <div class="popup-box">
+      <span class="popup-icon">⏸</span>
+      <div class="popup-title">GAME DIJEDA</div>
+      <div class="popup-sub">Ambil nafas sejenak, alam sedang menunggumu...</div>
+      <div class="btn-group" style="justify-content:center">
+        <button class="btn btn-primary" onclick="togglePause()">▶ Lanjutkan</button>
+        <button class="btn btn-secondary" onclick="exitGame()">← Keluar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level Complete Overlay -->
+  <div class="popup-overlay hidden" id="completeOverlay">
+    <div class="popup-box">
+      <span class="popup-icon" id="completeIcon">🌟</span>
+      <div class="popup-title" id="completeTitle">MISI BERHASIL!</div>
+      <div class="stars-display" id="completeStars">⭐⭐⭐</div>
+      <div class="score-display" id="completeSCore">0</div>
+      <div class="score-label">TOTAL SKOR</div>
+      <div class="popup-sub" id="completeMsg"></div>
+      <div class="btn-group" style="justify-content:center">
+        <button class="btn btn-primary" id="btnNextLevel" onclick="nextLevel()">LEVEL BERIKUTNYA →</button>
+        <button class="btn btn-secondary" onclick="exitGame()">← Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div class="popup-overlay hidden" id="gameoverOverlay">
+    <div class="popup-box">
+      <span class="popup-icon">💔</span>
+      <div class="popup-title" style="color:#e17055">MISI GAGAL</div>
+      <div class="popup-sub">Alam membutuhkan lebih banyak bantuan. Coba lagi dan selamatkan ekosistem!</div>
+      <div class="score-display" id="gameoverScore">0</div>
+      <div class="score-label">SKOR AKHIR</div>
+      <div class="btn-group" style="justify-content:center; margin-top:16px">
+        <button class="btn btn-primary" onclick="restartLevel()">🔄 Coba Lagi</button>
+        <button class="btn btn-secondary" onclick="exitGame()">← Menu</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===========================
+// GAME DATA & CONFIG
+// ===========================
+const LEVELS = [
+  { id:1, name:'Taman Kota',     icon:'🏙️', desc:'Bersihkan taman kota yang rusak',     time:300, targets:{ trees:15, trash:15, fires:3, animals:3 } },
+  { id:2, name:'Sungai Tercemar', icon:'🏞️', desc:'Pulihkan sungai yang tercemar',       time:300, targets:{ trees:10, trash:25, fires:2, animals:4 } },
+  { id:3, name:'Kebakaran Kecil', icon:'🔥', desc:'Padamkan kebakaran hutan kecil',      time:280, targets:{ trees:20, trash:10, fires:6, animals:5 } },
+  { id:4, name:'Selamatkan Satwa',icon:'🦌', desc:'Selamatkan hewan yang terancam',      time:270, targets:{ trees:15, trash:10, fires:4, animals:8 } },
+  { id:5, name:'Penebangan Liar', icon:'🪵', desc:'Hentikan penebangan dan pulihkan hutan', time:300, targets:{ trees:30, trash:20, fires:5, animals:6 } },
+  { id:6, name:'Kekeringan',     icon:'🌵', desc:'Atasi kekeringan dan selamatkan ekosistem', time:280, targets:{ trees:25, trash:15, fires:4, animals:5 } },
+  { id:7, name:'Kebakaran Besar', icon:'🌋', desc:'Padamkan kebakaran besar yang mengancam', time:260, targets:{ trees:20, trash:15, fires:10, animals:7 } },
+  { id:8, name:'Hutan Tropis',   icon:'🌴', desc:'Pulihkan hutan hujan tropis',          time:350, targets:{ trees:40, trash:20, fires:6, animals:10 } },
+  { id:9, name:'Taman Nasional', icon:'⛰️', desc:'Lindungi taman nasional',             time:350, targets:{ trees:35, trash:25, fires:8, animals:12 } },
+  { id:10, name:'Misi Terakhir', icon:'🌏', desc:'Selamatkan seluruh kawasan konservasi', time:400, targets:{ trees:50, trash:30, fires:12, animals:15 } },
+];
+
+const WEATHER_TYPES = [
+  { id:'sunny',  icon:'☀️',  name:'CERAH',   fireSpread:1.0, treeGrow:1.3, slippery:false },
+  { id:'rain',   icon:'🌧️',  name:'HUJAN',   fireSpread:0.3, treeGrow:1.0, slippery:true  },
+  { id:'wind',   icon:'🌪️',  name:'ANGIN',   fireSpread:2.5, treeGrow:0.8, slippery:false },
+  { id:'winter', icon:'❄️',  name:'DINGIN',  fireSpread:0.5, treeGrow:0.4, slippery:false },
+];
+
+const UPGRADES = [
+  { id:'fastGrow',   icon:'🌱', name:'Bibit Cepat',  cost:80,  desc:'Pohon tumbuh 2x lebih cepat' },
+  { id:'autoDrone',  icon:'🚁', name:'Drone Penyiram',cost:120, desc:'Otomatis padamkan api kecil'  },
+  { id:'bigTruck',   icon:'🚒', name:'Mobil Besar',   cost:150, desc:'Padamkan api 2x lebih cepat'  },
+  { id:'fastClean',  icon:'🧤', name:'Alat Cepat',    cost:100, desc:'Bersihkan 2x lebih cepat'    },
+  { id:'sensor',     icon:'🛰️', name:'Sensor Api',    cost:180, desc:'Deteksi api dari jauh'       },
+];
+
+const ANIMAL_TYPES = ['🦌','🐇','🦜','🦧','🐿️','🦊'];
+const TRASH_TYPES = ['🛢️','🧴','🏚️'];
+const TREE_STAGES = ['🌱','🌿','🌳'];
+
+// Save data
+let saveData = { unlockedLevels: [1], stars: {}, highScores: {} };
+try { const s = localStorage.getItem('ecoGuardianSave'); if(s) saveData = JSON.parse(s); } catch(e){}
+
+// Game state
+let gs = {
+  running: false, paused: false, currentLevel: 1,
+  score: 0, energy: 100, time: 300,
+  tool: 'plant',
+  weather: WEATHER_TYPES[0], weatherTimer: 0,
+  objects: [],
+  done: { trees:0, trash:0, fires:0, animals:0 },
+  upgrades: {},
+  lastTime: 0,
+  nextObjId: 0,
+};
+
+// Canvas
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Particles
+let particles = [];
+
+// ===========================
+// SCREEN MANAGEMENT
+// ===========================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  if(id === 'level-select') buildLevelGrid();
+}
+
+function saveProg() {
+  try { localStorage.setItem('ecoGuardianSave', JSON.stringify(saveData)); } catch(e){}
+}
+
+// ===========================
+// LEVEL SELECT
+// ===========================
+function buildLevelGrid() {
+  const grid = document.getElementById('levelGrid');
+  grid.innerHTML = '';
+  LEVELS.forEach(lv => {
+    const unlocked = saveData.unlockedLevels.includes(lv.id);
+    const stars = saveData.stars[lv.id] || 0;
+    const starStr = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+    const card = document.createElement('div');
+    card.className = 'level-card' + (unlocked ? '' : ' locked') + (lv.id === 1 ? ' active-badge' : '');
+    card.innerHTML = unlocked
+      ? `<div class="lnum">${lv.icon}</div>
+         <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:#2ecc71;margin:3px 0">${lv.id}</div>
+         <div class="lname">${lv.name}</div>
+         <div class="lstars">${starStr}</div>`
+      : `<div class="llock">🔒</div>
+         <div class="lname">Level ${lv.id}</div>`;
+    if(unlocked) card.onclick = () => startLevel(lv.id);
+    grid.appendChild(card);
+  });
+}
+
+// ===========================
+// HOW TO PLAY
+// ===========================
+function showHowTo() {
+  const popup = document.createElement('div');
+  popup.className = 'popup-overlay';
+  popup.style.zIndex = '100';
+  popup.innerHTML = `
+    <div class="popup-box" style="max-width:520px;max-height:80vh;overflow-y:auto;text-align:left">
+      <div class="popup-title" style="text-align:center;margin-bottom:16px">📖 CARA BERMAIN</div>
+      <div style="font-size:13px;color:#a8d5b8;line-height:2">
+        <strong style="color:#2ecc71">🌱 Menanam Pohon</strong><br>
+        Pilih tool Tanam, klik area tanah yang berwarna coklat/hijau gelap untuk menanam bibit. Pohon akan tumbuh perlahan.<br><br>
+        <strong style="color:#e17055">💧 Memadamkan Api</strong><br>
+        Pilih tool Padamkan, klik pada titik api 🔥. Api akan menyebar bila dibiarkan, terutama saat angin kencang!<br><br>
+        <strong style="color:#f9ca24">🦌 Menyelamatkan Satwa</strong><br>
+        Pilih tool Selamatkan, klik hewan yang panik. Mereka akan diarahkan ke zona aman (area hijau).<br><br>
+        <strong style="color:#74b9ff">🧤 Membersihkan Sampah</strong><br>
+        Pilih tool Bersihkan, klik sampah untuk mengumpulkannya. Jaga sungai dan taman tetap bersih!<br><br>
+        <strong style="color:#6c5ce7">⬆️ Upgrade</strong><br>
+        Gunakan energi untuk membeli upgrade yang memudahkan misimu.<br><br>
+        <strong style="color:#fd79a8">🌤 Sistem Cuaca</strong><br>
+        Cuaca berubah dinamis. Hujan membantu memadamkan api, angin mempercepatnya!<br><br>
+        <strong style="color:#2ecc71">🎯 Target & Bintang</strong><br>
+        Capai semua target → ⭐⭐⭐ | Sebagian → ⭐⭐ | Gagal → ⭐
+      </div>
+      <div style="text-align:center;margin-top:24px">
+        <button class="btn btn-primary" onclick="this.closest('.popup-overlay').remove()">MENGERTI!</button>
+      </div>
+    </div>`;
+  document.body.appendChild(popup);
+}
+
+// ===========================
+// GAME OBJECTS
+// ===========================
+function nextId() { return gs.nextObjId++; }
+
+function createFire(x, y, intensity=1) {
+  return { id:nextId(), type:'fire', x, y, intensity, spreadTimer:0, size:24+intensity*6, alpha:1 };
+}
+function createTree(x, y, stage=0, auto=false) {
+  return { id:nextId(), type:'tree', x, y, stage, growTimer:0, alive:true, auto };
+}
+function createAnimal(x, y) {
+  const safeX = 60 + Math.random() * 80;
+  const safeY = canvas.height * 0.25 + Math.random() * 40;
+  return { id:nextId(), type:'animal', x, y, icon:ANIMAL_TYPES[Math.floor(Math.random()*ANIMAL_TYPES.length)], panic:true, tx:x, ty:y, safeX, safeY, rescued:false };
+}
+function createTrash(x, y) {
+  return { id:nextId(), type:'trash', x, y, icon:TRASH_TYPES[Math.floor(Math.random()*TRASH_TYPES.length)] };
+}
+function createParticle(x, y, text, color, dy=-2) {
+  particles.push({ x, y, text, color, dy, life:1.5, alpha:1 });
+}
+
+// ===========================
+// LEVEL INIT
+// ===========================
+function startLevel(id) {
+  const lv = LEVELS[id - 1];
+  gs = {
+    running: true, paused: false, currentLevel: id,
+    score: 0, energy: 100, time: lv.time,
+    tool: 'plant', level: lv,
+    weather: WEATHER_TYPES[0], weatherTimer: 60 + Math.random()*60,
+    objects: [],
+    done: { trees:0, trash:0, fires:0, animals:0 },
+    upgrades: {},
+    lastTime: performance.now(),
+    nextObjId: 0,
+    autodroneTimer: 0,
+  };
+  particles = [];
+  hideAllPopups();
+  resizeCanvas();
+  showScreen('game');
+  spawnInitialObjects(lv);
+  updateHUD();
+  buildMissionPanel(lv);
+  buildUpgradePanel();
+  selectTool('plant');
+  requestAnimationFrame(gameLoop);
+}
+
+function spawnInitialObjects(lv) {
+  const W = canvas.width, H = canvas.height;
+  const ground = { x: 0, y: H*0.3, w: W, h: H*0.7 };
+
+  // Fires
+  const numFires = Math.ceil(lv.targets.fires * 0.7);
+  for(let i=0; i<numFires; i++) {
+    gs.objects.push(createFire(
+      ground.x + 80 + Math.random()*(W-160),
+      ground.y + 30 + Math.random()*(H*0.45)
+    ));
+  }
+  // Animals
+  const numAnimals = Math.ceil(lv.targets.animals * 0.8);
+  for(let i=0; i<numAnimals; i++) {
+    gs.objects.push(createAnimal(
+      W*0.3 + Math.random()*(W*0.6),
+      ground.y + 40 + Math.random()*(H*0.4)
+    ));
+  }
+  // Trash
+  const numTrash = Math.ceil(lv.targets.trash * 0.7);
+  for(let i=0; i<numTrash; i++) {
+    gs.objects.push(createTrash(
+      80 + Math.random()*(W-160),
+      ground.y + 20 + Math.random()*(H*0.5)
+    ));
+  }
+  // Trees (young already planted, some burnt)
+  for(let i=0; i<8; i++) {
+    const t = createTree(80+Math.random()*(W-160), ground.y+30+Math.random()*(H*0.4));
+    t.stage = Math.random() < 0.5 ? 0 : 1;
+    if(Math.random()<0.3) { t.stage=0; t.alive=false; } // burnt
+    gs.objects.push(t);
+  }
+}
+
+// ===========================
+// CANVAS & RESIZE
+// ===========================
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', () => { if(gs.running) resizeCanvas(); });
+
+// ===========================
+// GAME LOOP
+// ===========================
+function gameLoop(now) {
+  if(!gs.running) return;
+  const dt = Math.min((now - gs.lastTime) / 1000, 0.1);
+  gs.lastTime = now;
+
+  if(!gs.paused) {
+    update(dt);
+    render();
+  }
+  requestAnimationFrame(gameLoop);
+}
+
+// ===========================
+// UPDATE
+// ===========================
+function update(dt) {
+  gs.time -= dt;
+  if(gs.time <= 0) { gs.time = 0; endLevel(); return; }
+
+  // Weather
+  gs.weatherTimer -= dt;
+  if(gs.weatherTimer <= 0) {
+    gs.weather = WEATHER_TYPES[Math.floor(Math.random()*WEATHER_TYPES.length)];
+    gs.weatherTimer = 45 + Math.random()*60;
+    showNotif(`Cuaca berubah: ${gs.weather.icon} ${gs.weather.name}`, 'info');
+    updateWeatherHUD();
+  }
+
+  // Fire update
+  gs.objects.filter(o=>o.type==='fire').forEach(f => {
+    f.spreadTimer += dt * gs.weather.fireSpread;
+    if(f.spreadTimer > 8) {
+      f.spreadTimer = 0;
+      if(Math.random() < 0.45) {
+        const nx = f.x + (Math.random()-0.5)*80;
+        const ny = f.y + (Math.random()-0.5)*60;
+        if(nx>40 && nx<canvas.width-40 && ny>canvas.height*0.3 && ny<canvas.height-80) {
+          gs.objects.push(createFire(nx, ny, Math.min(f.intensity, 2)));
+          // Possibly burn adjacent tree
+          gs.objects.filter(o=>o.type==='tree'&&o.alive).forEach(t=>{
+            if(dist(t.x,t.y,nx,ny)<40){t.alive=false;gs.score-=30;gs.score=Math.max(0,gs.score);showNotif('-30 Pohon terbakar!','neg');}
+          });
+        }
+      }
+    }
+    // Rain slowly extinguishes small fires
+    if(gs.weather.id==='rain') {
+      f.intensity -= dt*0.05;
+      if(f.intensity <= 0) removeObj(f.id);
+    }
+  });
+
+  // Tree grow
+  gs.objects.filter(o=>o.type==='tree'&&o.alive&&o.stage<2).forEach(t => {
+    t.growTimer += dt * gs.weather.treeGrow * (gs.upgrades.fastGrow ? 2 : 1);
+    if(t.growTimer > 6) { t.growTimer=0; t.stage++; }
+  });
+
+  // Animals wander
+  gs.objects.filter(o=>o.type==='animal'&&!o.rescued).forEach(a=>{
+    if(a.panic) {
+      a.x += (Math.random()-0.5)*1.5;
+      a.y += (Math.random()-0.5)*1.5;
+      a.x = Math.max(40, Math.min(canvas.width-40, a.x));
+      a.y = Math.max(canvas.height*0.3+20, Math.min(canvas.height-80, a.y));
+    }
+  });
+
+  // Auto drone
+  if(gs.upgrades.autoDrone) {
+    gs.autodroneTimer = (gs.autodroneTimer||0) + dt;
+    if(gs.autodroneTimer > 5) {
+      gs.autodroneTimer = 0;
+      const smallFires = gs.objects.filter(o=>o.type==='fire'&&o.intensity<=1);
+      if(smallFires.length>0) {
+        const f = smallFires[0];
+        removeObj(f.id);
+        gs.score += 50; gs.done.fires++;
+        createParticle(f.x,f.y,'🚁 Auto!','#74b9ff');
+        updateMissionPanel();
+      }
+    }
+  }
+
+  // Spawn bonus trash/animal occasionally
+  if(Math.random() < dt * 0.05) {
+    if(gs.objects.filter(o=>o.type==='trash').length < 8) {
+      gs.objects.push(createTrash(80+Math.random()*(canvas.width-160), canvas.height*0.35+Math.random()*(canvas.height*0.4)));
+    }
+  }
+
+  // Update particles
+  particles.forEach(p => { p.y += p.dy*dt*60; p.alpha -= dt*0.7; });
+  particles = particles.filter(p=>p.alpha>0);
+
+  updateHUD();
+  checkWin();
+}
+
+// ===========================
+// RENDER
+// ===========================
+function render() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+
+  // Sky gradient
+  const skyGrad = ctx.createLinearGradient(0,0,0,H*0.35);
+  const weath = gs.weather;
+  if(weath.id==='rain') {
+    skyGrad.addColorStop(0,'#1e2d3d'); skyGrad.addColorStop(1,'#2c3e50');
+  } else if(weath.id==='wind') {
+    skyGrad.addColorStop(0,'#2d1b69'); skyGrad.addColorStop(1,'#6c3483');
+  } else if(weath.id==='winter') {
+    skyGrad.addColorStop(0,'#2c3e50'); skyGrad.addColorStop(1,'#85929e');
+  } else {
+    skyGrad.addColorStop(0,'#0a1628'); skyGrad.addColorStop(1,'#1a3a5c');
+  }
+  ctx.fillStyle = skyGrad; ctx.fillRect(0,0,W,H*0.35);
+
+  // Sun/moon/clouds
+  drawSkyElements(W, H);
+
+  // Ground
+  const groundGrad = ctx.createLinearGradient(0,H*0.3,0,H);
+  groundGrad.addColorStop(0,'#2d5016'); groundGrad.addColorStop(0.3,'#1e3a0a'); groundGrad.addColorStop(1,'#111b07');
+  ctx.fillStyle = groundGrad; ctx.fillRect(0,H*0.3,W,H*0.7);
+
+  // Safe zone
+  const szGrad = ctx.createLinearGradient(0,H*0.25,0,H*0.45);
+  szGrad.addColorStop(0,'rgba(46,204,113,0.25)'); szGrad.addColorStop(1,'rgba(46,204,113,0)');
+  ctx.fillStyle = szGrad; ctx.fillRect(0,H*0.25,160,H*0.35);
+  ctx.strokeStyle = 'rgba(46,204,113,0.5)'; ctx.lineWidth=2;
+  ctx.setLineDash([6,4]); ctx.strokeRect(4,H*0.26,152,H*0.22); ctx.setLineDash([]);
+  ctx.fillStyle='rgba(46,204,113,0.7)'; ctx.font='11px Inter'; ctx.textAlign='center';
+  ctx.fillText('🏕️ ZONA AMAN', 80, H*0.27+12);
+
+  // Horizon line
+  ctx.strokeStyle = 'rgba(46,204,113,0.15)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(0,H*0.3); ctx.lineTo(W,H*0.3); ctx.stroke();
+
+  // Rain effect
+  if(weath.id==='rain') drawRain(W,H);
+  if(weath.id==='wind') drawWind(W,H);
+
+  // Objects
+  gs.objects.forEach(o => {
+    if(o.type==='fire') drawFire(o);
+    else if(o.type==='tree') drawTree(o);
+    else if(o.type==='animal') drawAnimal(o);
+    else if(o.type==='trash') drawTrash(o);
+  });
+
+  // Particles
+  particles.forEach(p=>{
+    ctx.globalAlpha=p.alpha;
+    ctx.font='bold 14px Inter'; ctx.textAlign='center';
+    ctx.fillStyle=p.color||'#fff';
+    ctx.fillText(p.text,p.x,p.y);
+  });
+  ctx.globalAlpha=1;
+
+  // Tool cursor hint
+  drawCursorHint(W,H);
+}
+
+function drawSkyElements(W,H) {
+  // Sun
+  if(gs.weather.id==='sunny'||gs.weather.id==='wind') {
+    const sunX=W-80,sunY=50;
+    const sg=ctx.createRadialGradient(sunX,sunY,5,sunX,sunY,40);
+    sg.addColorStop(0,'rgba(249,202,36,0.9)'); sg.addColorStop(1,'rgba(249,202,36,0)');
+    ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(sunX,sunY,40,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#f9ca24'; ctx.beginPath(); ctx.arc(sunX,sunY,18,0,Math.PI*2); ctx.fill();
+  }
+  // Clouds
+  if(gs.weather.id==='rain') {
+    ctx.fillStyle='rgba(100,120,140,0.6)';
+    for(let i=0;i<4;i++) { drawCloud(50+i*W/4, 30+i%2*20, 60+i*10); }
+  }
+  // Stars for night/winter
+  if(gs.weather.id==='winter') {
+    for(let i=0;i<15;i++) {
+      ctx.fillStyle='rgba(200,220,255,0.8)';
+      ctx.beginPath(); ctx.arc(Math.sin(i*137)*W*0.45+W*0.5, Math.sin(i*97)*H*0.12+H*0.05, 1.5,0,Math.PI*2); ctx.fill();
+    }
+  }
+}
+
+function drawCloud(x,y,r) {
+  ctx.beginPath();
+  ctx.arc(x,y,r*0.5,0,Math.PI*2);
+  ctx.arc(x+r*0.4,y-r*0.2,r*0.4,0,Math.PI*2);
+  ctx.arc(x+r*0.8,y,r*0.45,0,Math.PI*2);
+  ctx.arc(x+r*0.4,y+r*0.2,r*0.35,0,Math.PI*2);
+  ctx.fill();
+}
+
+function drawRain(W,H) {
+  ctx.strokeStyle='rgba(150,200,255,0.3)'; ctx.lineWidth=1;
+  for(let i=0;i<40;i++) {
+    const rx=(Math.sin(i*157.3)*W*0.5+W*0.5+Date.now()*0.05*i%W)%W;
+    const ry=(Date.now()*0.3+i*37)%H;
+    ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx+2,ry+12); ctx.stroke();
+  }
+}
+
+function drawWind(W,H) {
+  ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=2;
+  for(let i=0;i<5;i++) {
+    const wy=H*0.15+i*H*0.04;
+    const off=(Date.now()*0.3+i*100)%W;
+    ctx.beginPath(); ctx.moveTo((off-60)%W,wy); ctx.lineTo((off-20)%W,wy+4); ctx.stroke();
+  }
+}
+
+function drawFire(f) {
+  const sz = f.size || 28;
+  // Glow
+  const fg = ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,sz);
+  fg.addColorStop(0,'rgba(255,100,0,0.4)'); fg.addColorStop(1,'rgba(255,50,0,0)');
+  ctx.fillStyle=fg; ctx.beginPath(); ctx.arc(f.x,f.y,sz,0,Math.PI*2); ctx.fill();
+  // Emoji
+  ctx.font=`${sz}px serif`; ctx.textAlign='center';
+  ctx.fillText('🔥',f.x,f.y+sz*0.4);
+  // Intensity badge
+  if(f.intensity>1) {
+    ctx.fillStyle='rgba(231,76,60,0.85)'; ctx.font='bold 10px Inter';
+    ctx.fillText(`×${f.intensity.toFixed(0)}`,f.x+sz*0.5,f.y-sz*0.3);
+  }
+}
+
+function drawTree(t) {
+  const icons = t.alive ? TREE_STAGES : ['💀'];
+  ctx.font='24px serif'; ctx.textAlign='center';
+  ctx.globalAlpha = t.alive ? 1 : 0.5;
+  ctx.fillText(icons[Math.min(t.stage, icons.length-1)], t.x, t.y+12);
+  ctx.globalAlpha=1;
+  // Growth bar for young trees
+  if(t.alive && t.stage<2) {
+    const pct = t.growTimer/6;
+    ctx.fillStyle='rgba(0,0,0,0.4)';ctx.fillRect(t.x-16,t.y+14,32,5);
+    ctx.fillStyle='#2ecc71';ctx.fillRect(t.x-16,t.y+14,32*pct,5);
+  }
+}
+
+function drawAnimal(a) {
+  if(a.rescued) return;
+  ctx.font='24px serif'; ctx.textAlign='center';
+  // Panic animation
+  const bob = a.panic ? Math.sin(Date.now()*0.01)*3 : 0;
+  ctx.fillText(a.icon, a.x, a.y+bob);
+  // Panic indicator
+  if(a.panic) {
+    ctx.font='10px serif'; ctx.fillText('❗', a.x+12, a.y-8);
+  }
+}
+
+function drawTrash(t) {
+  ctx.font='22px serif'; ctx.textAlign='center';
+  ctx.fillText(t.icon, t.x, t.y);
+}
+
+let _cursorX=0, _cursorY=0;
+function drawCursorHint(W,H) {
+  const icons = {plant:'🌱',water:'💧',rescue:'🦌',clean:'🧤'};
+  if(icons[gs.tool]) {
+    ctx.font='18px serif'; ctx.textAlign='left';
+    ctx.globalAlpha=0.7;
+    ctx.fillText(icons[gs.tool], _cursorX+12, _cursorY-4);
+    ctx.globalAlpha=1;
+  }
+}
+
+canvas.addEventListener('mousemove',e=>{_cursorX=e.offsetX;_cursorY=e.offsetY;});
+canvas.addEventListener('touchmove',e=>{
+  const t=e.touches[0];
+  _cursorX=t.clientX-canvas.offsetLeft;
+  _cursorY=t.clientY-canvas.offsetTop;
+  e.preventDefault();
+},{passive:false});
+
+// ===========================
+// CLICK / INTERACTION
+// ===========================
+canvas.addEventListener('click', handleCanvasClick);
+canvas.addEventListener('touchstart', e=>{
+  const t=e.touches[0];
+  handleCanvasClick({offsetX:t.clientX-canvas.offsetLeft,offsetY:t.clientY-canvas.offsetTop});
+  e.preventDefault();
+},{passive:false});
+
+function handleCanvasClick(e) {
+  if(!gs.running||gs.paused) return;
+  const cx=e.offsetX, cy=e.offsetY;
+  const H=canvas.height;
+
+  switch(gs.tool) {
+    case 'plant':  handlePlant(cx,cy,H); break;
+    case 'water':  handleWater(cx,cy); break;
+    case 'rescue': handleRescue(cx,cy); break;
+    case 'clean':  handleClean(cx,cy); break;
+  }
+}
+
+function handlePlant(cx,cy,H) {
+  if(cy < H*0.3) { showNotif('Hanya bisa tanam di tanah!','neg'); return; }
+  if(gs.energy < 10) { showNotif('Energi tidak cukup!','neg'); return; }
+  // Check not too close to fire
+  const nearFire = gs.objects.some(o=>o.type==='fire'&&dist(o.x,o.y,cx,cy)<50);
+  if(nearFire) { showNotif('Terlalu dekat api!','neg'); return; }
+  gs.objects.push(createTree(cx,cy));
+  gs.energy = Math.max(0, gs.energy-10);
+  gs.score += 20; gs.done.trees++;
+  createParticle(cx,cy-20,'+20','#2ecc71');
+  showNotif('🌱 Pohon ditanam!','pos');
+  updateMissionPanel();
+}
+
+function handleWater(cx,cy) {
+  const fire = closestObj(cx,cy,'fire',50);
+  if(!fire) { showNotif('Tidak ada api di sini!','neg'); return; }
+  if(gs.energy < 15) { showNotif('Energi tidak cukup!','neg'); return; }
+  const spd = gs.upgrades.bigTruck ? 2 : 1;
+  fire.intensity -= spd;
+  if(fire.intensity <= 0) {
+    removeObj(fire.id);
+    gs.score += 50; gs.done.fires++;
+    gs.energy = Math.max(0,gs.energy-15);
+    createParticle(cx,cy-20,'+50 Api padam!','#74b9ff');
+    showNotif('💧 Api dipadamkan!','pos');
+    updateMissionPanel();
+  } else {
+    gs.energy = Math.max(0,gs.energy-8);
+    createParticle(cx,cy-20,'💧','#74b9ff',-1);
+    showNotif('💧 Api berkurang...','info');
+  }
+}
+
+function handleRescue(cx,cy) {
+  const animal = closestObj(cx,cy,'animal',45);
+  if(!animal||animal.rescued) { showNotif('Tidak ada hewan di sini!','neg'); return; }
+  if(gs.energy < 12) { showNotif('Energi tidak cukup!','neg'); return; }
+  animal.rescued = true;
+  gs.score += 40; gs.done.animals++;
+  gs.energy = Math.max(0,gs.energy-12);
+  createParticle(cx,cy-20,'+40 Hewan diselamatkan!','#f9ca24');
+  showNotif(`${animal.icon} Hewan diselamatkan!`,'pos');
+  // Animate to safe zone
+  const startX=animal.x, startY=animal.y;
+  const endX=animal.safeX, endY=animal.safeY;
+  let t2=0;
+  const ani=()=>{t2+=0.04;animal.x=lerp(startX,endX,t2);animal.y=lerp(startY,endY,t2);if(t2<1)requestAnimationFrame(ani);};
+  ani();
+  updateMissionPanel();
+}
+
+function handleClean(cx,cy) {
+  const trash = closestObj(cx,cy,'trash',40);
+  if(!trash) { showNotif('Tidak ada sampah di sini!','neg'); return; }
+  if(gs.energy < 5) { showNotif('Energi tidak cukup!','neg'); return; }
+  removeObj(trash.id);
+  gs.score += 10; gs.done.trash++;
+  gs.energy = Math.max(0,gs.energy-(gs.upgrades.fastClean?3:5));
+  createParticle(cx,cy-20,'+10','#a8d5b8');
+  showNotif('🧤 Sampah dibersihkan!','pos');
+  updateMissionPanel();
+}
+
+// ===========================
+// HELPERS
+// ===========================
+function dist(x1,y1,x2,y2) { return Math.hypot(x2-x1,y2-y1); }
+function lerp(a,b,t) { return a+(b-a)*Math.min(t,1); }
+function closestObj(cx,cy,type,maxDist) {
+  let best=null, bestD=maxDist;
+  gs.objects.filter(o=>o.type===type).forEach(o=>{
+    const d=dist(o.x,o.y,cx,cy);
+    if(d<bestD){bestD=d;best=o;}
+  });
+  return best;
+}
+function removeObj(id) { gs.objects = gs.objects.filter(o=>o.id!==id); }
+
+// ===========================
+// HUD
+// ===========================
+function updateHUD() {
+  document.getElementById('hudScore').textContent = gs.score;
+  document.getElementById('hudEnergy').textContent = Math.floor(gs.energy);
+  document.getElementById('energyFill').style.width = gs.energy+'%';
+  const m = Math.floor(gs.time/60), s = Math.floor(gs.time%60);
+  document.getElementById('hudTimer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  const tb = document.getElementById('timerBadge');
+  tb.classList.toggle('urgent', gs.time < 30);
+  // Regen energy slowly
+  gs.energy = Math.min(100, gs.energy + 0.008);
+}
+
+function updateWeatherHUD() {
+  document.getElementById('hudWeather').textContent = gs.weather.icon;
+  document.getElementById('hudWeatherName').textContent = gs.weather.name;
+}
+
+function buildMissionPanel(lv) {
+  const list = document.getElementById('missionList');
+  list.innerHTML = `
+    <div class="mission-item" id="mi-trees">
+      <span class="micon">🌳</span><span>Pohon ditanam</span>
+      <span class="mprog">0/${lv.targets.trees}</span>
+    </div>
+    <div class="mission-item" id="mi-fires">
+      <span class="micon">💧</span><span>Api dipadamkan</span>
+      <span class="mprog">0/${lv.targets.fires}</span>
+    </div>
+    <div class="mission-item" id="mi-animals">
+      <span class="micon">🦌</span><span>Hewan diselamatkan</span>
+      <span class="mprog">0/${lv.targets.animals}</span>
+    </div>
+    <div class="mission-item" id="mi-trash">
+      <span class="micon">🧤</span><span>Sampah dibersihkan</span>
+      <span class="mprog">0/${lv.targets.trash}</span>
+    </div>`;
+}
+
+function updateMissionPanel() {
+  const t = gs.level.targets;
+  function upd(id,done,total) {
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.querySelector('.mprog').textContent=`${Math.min(done,total)}/${total}`;
+    el.classList.toggle('done', done>=total);
+  }
+  upd('mi-trees',gs.done.trees,t.trees);
+  upd('mi-fires',gs.done.fires,t.fires);
+  upd('mi-animals',gs.done.animals,t.animals);
+  upd('mi-trash',gs.done.trash,t.trash);
+}
+
+// ===========================
+// UPGRADES
+// ===========================
+function buildUpgradePanel() {
+  const list = document.getElementById('upgList');
+  list.innerHTML = UPGRADES.map(u=>`
+    <div class="upg-item" id="upg-${u.id}" onclick="buyUpgrade('${u.id}',${u.cost})">
+      <span class="upg-icon">${u.icon}</span>
+      <span class="upg-name">${u.name}</span>
+      <span class="upg-cost">⚡${u.cost}</span>
+    </div>`).join('');
+}
+
+function buyUpgrade(id, cost) {
+  if(gs.upgrades[id]) { showNotif('Sudah dibeli!','info'); return; }
+  if(gs.energy < cost) { showNotif('Energi tidak cukup!','neg'); return; }
+  gs.energy -= cost; gs.upgrades[id] = true;
+  const upg = UPGRADES.find(u=>u.id===id);
+  showNotif(`${upg.icon} ${upg.name} aktif!`,'pos');
+  const el = document.getElementById(`upg-${id}`);
+  if(el) { el.classList.add('bought'); el.querySelector('.upg-cost').textContent='✓'; }
+}
+
+function toggleUpgradePanel() {
+  const panel = document.getElementById('upgrade-panel');
+  panel.classList.toggle('show');
+}
+
+// ===========================
+// TOOL SELECT
+// ===========================
+function selectTool(t) {
+  gs.tool = t;
+  document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tool-'+t)?.classList.add('active');
+  document.getElementById('upgrade-panel')?.classList.remove('show');
+}
+
+// ===========================
+// NOTIFICATIONS
+// ===========================
+const notifWrap = document.getElementById('notif-wrap');
+const notifQueue = [];
+let notifActive = 0;
+function showNotif(msg,type='info') {
+  if(notifActive>=3) return;
+  notifActive++;
+  const el=document.createElement('div');
+  el.className=`notif ${type}`;
+  el.innerHTML=`<span>${msg}</span>`;
+  notifWrap.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity 0.3s'; setTimeout(()=>{el.remove();notifActive--;},300); },2000);
+}
+
+// ===========================
+// WIN/LOSE
+// ===========================
+function checkWin() {
+  const t = gs.level.targets;
+  if(gs.done.trees>=t.trees && gs.done.fires>=t.fires && gs.done.animals>=t.animals && gs.done.trash>=t.trash) {
+    endLevel(true);
+  }
+}
+
+function endLevel(win=false) {
+  gs.running = false;
+  const t = gs.level.targets;
+  const total = t.trees+t.fires+t.animals+t.trash;
+  const done = gs.done.trees+gs.done.fires+gs.done.animals+gs.done.trash;
+  const pct = done/total;
+  const stars = win ? 3 : pct>=0.7 ? 2 : pct>=0.4 ? 1 : 0;
+
+  // Save
+  const prevStars = saveData.stars[gs.currentLevel]||0;
+  saveData.stars[gs.currentLevel] = Math.max(prevStars,stars);
+  if(stars>=1 && !saveData.unlockedLevels.includes(gs.currentLevel+1) && gs.currentLevel<10) {
+    saveData.unlockedLevels.push(gs.currentLevel+1);
+  }
+  saveProg();
+
+  if(stars>=1) showCompleteScreen(stars);
+  else showGameOver();
+}
+
+function showCompleteScreen(stars) {
+  const ov = document.getElementById('completeOverlay');
+  document.getElementById('completeIcon').textContent = stars===3?'🌟':'🏆';
+  document.getElementById('completeTitle').textContent = stars===3?'LUAR BIASA!':'MISI SELESAI!';
+  document.getElementById('completeStars').textContent = '⭐'.repeat(stars)+'☆'.repeat(3-stars);
+  document.getElementById('completeSCore').textContent = gs.score;
+  const msgs=['Terus berjuang!','Bagus! Alam membaik!','Sempurna! Kamu penyelamat sejati alam! 🌿'];
+  document.getElementById('completeMsg').textContent = msgs[stars-1]||'';
+  document.getElementById('btnNextLevel').style.display = gs.currentLevel>=10?'none':'inline-flex';
+  ov.classList.remove('hidden');
+}
+
+function showGameOver() {
+  document.getElementById('gameoverScore').textContent = gs.score;
+  document.getElementById('gameoverOverlay').classList.remove('hidden');
+}
+
+function hideAllPopups() {
+  ['pauseOverlay','completeOverlay','gameoverOverlay'].forEach(id=>{
+    document.getElementById(id).classList.add('hidden');
+  });
+}
+
+function nextLevel() {
+  if(gs.currentLevel<10) startLevel(gs.currentLevel+1);
+  else exitGame();
+}
+
+function restartLevel() { startLevel(gs.currentLevel); }
+
+function exitGame() {
+  gs.running = false;
+  hideAllPopups();
+  showScreen('level-select');
+}
+
+function togglePause() {
+  gs.paused = !gs.paused;
+  document.getElementById('pauseOverlay').classList.toggle('hidden', !gs.paused);
+  document.getElementById('btnPause').textContent = gs.paused?'▶ Lanjut':'⏸ Pause';
+  if(!gs.paused) { gs.lastTime=performance.now(); requestAnimationFrame(gameLoop); }
+}
+
+// ===========================
+// INIT TREES ON MENU
+// ===========================
+function initMenuTrees() {
+  const cont = document.getElementById('menuBgTrees');
+  const W = window.innerWidth;
+  for(let i=0;i<12;i++) {
+    const el=document.createElement('div');
+    const h=80+Math.random()*120, w=h*0.7;
+    el.className='tree-silhouette';
+    el.style.cssText=`left:${i*(W/12)+Math.random()*30}px;border-left-width:${w/2}px;border-right-width:${w/2}px;border-bottom-width:${h}px;border-bottom-color:${i%3===0?'#0d2a18':'#142e1a'};`;
+    cont.appendChild(el);
+  }
+}
+initMenuTrees();
+
+// Start at menu
+showScreen('menu');
+</script>
+</body>
+</html>
