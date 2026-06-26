@@ -9,307 +9,287 @@
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
 
   * { margin:0; padding:0; box-sizing:border-box; }
-
   :root {
-    --green: #2ecc71;
-    --dark-green: #1a7a3c;
-    --teal: #00b894;
-    --fire: #e17055;
-    --blue: #0984e3;
-    --gold: #f9ca24;
-    --dark: #0d1b2a;
-    --darker: #060e17;
-    --panel: rgba(13,27,42,0.92);
-    --glass: rgba(255,255,255,0.06);
-    --border: rgba(46,204,113,0.3);
+    --green:#2ecc71; --dark-green:#1a7a3c; --teal:#00b894;
+    --fire:#e17055; --blue:#0984e3; --gold:#f9ca24;
+    --dark:#0d1b2a; --darker:#060e17;
+    --panel:rgba(13,27,42,0.93); --glass:rgba(255,255,255,0.06);
+    --border:rgba(46,204,113,0.3); --wood:#7d5a3c;
   }
-
   body {
-    background: var(--darker);
-    color: #e0f7e9;
-    font-family: 'Inter', sans-serif;
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    background:#1a3a1a; color:#e0f7e9;
+    font-family:'Inter',sans-serif; overflow:hidden;
+    height:100vh; width:100vw;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
   }
 
-  /* ===== SCREENS ===== */
-  .screen { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; transition: opacity 0.5s; }
+  /* SCREENS */
+  .screen { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 0.5s; }
   .screen.hidden { opacity:0; pointer-events:none; }
 
-  /* ===== MAIN MENU ===== */
-  #menu {
-    background: radial-gradient(ellipse at 50% 0%, #1a4a2e 0%, #060e17 70%);
-  }
-  .menu-bg-trees {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
-    background: linear-gradient(to top, #0d2a18 0%, transparent 100%);
-    overflow: hidden;
-  }
-  .tree-silhouette {
-    position: absolute; bottom: 0;
-    width: 0; height: 0;
-    border-left: solid transparent;
-    border-right: solid transparent;
-    border-bottom: solid #1a4a2e;
-  }
-  .logo-wrap {
-    position: relative; z-index: 10; text-align: center; margin-bottom: 40px;
-  }
-  .logo-icon { font-size: 80px; animation: float 3s ease-in-out infinite; display:block; margin-bottom: 10px; }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-15px)} }
+  /* MAIN MENU */
+  #menu { background:radial-gradient(ellipse at 50% 0%,#1f4d2a 0%,#060e17 70%); }
+  .menu-canvas-bg { position:absolute; inset:0; }
+  .logo-wrap { position:relative; z-index:10; text-align:center; margin-bottom:36px; }
+  .logo-icon { font-size:80px; animation:float 3s ease-in-out infinite; display:block; margin-bottom:10px; }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
   .logo-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(28px,5vw,56px);
-    font-weight: 900;
-    background: linear-gradient(135deg, #2ecc71, #00cec9, #6c5ce7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 4px;
+    font-family:'Orbitron',sans-serif; font-size:clamp(28px,5vw,52px); font-weight:900;
+    background:linear-gradient(135deg,#2ecc71,#00cec9,#6c5ce7);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    letter-spacing:4px;
   }
-  .logo-sub { font-size: 14px; color: #81b59a; letter-spacing: 3px; margin-top: 6px; }
-  .story-box {
-    background: var(--glass);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px 32px;
-    max-width: 540px;
-    text-align: center;
-    color: #a8d5b8;
-    font-size: 13px;
-    line-height: 1.8;
-    margin-bottom: 36px;
-    backdrop-filter: blur(10px);
-    position: relative; z-index: 10;
+  .logo-sub { font-size:13px; color:#81b59a; letter-spacing:3px; margin-top:6px; }
+
+  /* WOOD PANEL */
+  .wood-panel {
+    background:linear-gradient(145deg,#5c3a1e,#7d5a3c,#5c3a1e);
+    border:3px solid #3a2010; border-radius:16px; padding:20px 32px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+    position:relative; z-index:10;
   }
-  .story-box strong { color: #2ecc71; }
-  .btn-group { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; position: relative; z-index:10; }
+  .wood-panel::before {
+    content:''; position:absolute; inset:3px; border-radius:13px;
+    border:1px solid rgba(255,255,255,0.08); pointer-events:none;
+  }
+
+  /* BUTTONS */
   .btn {
-    padding: 14px 36px; border: none; border-radius: 50px; cursor: pointer;
-    font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700;
-    letter-spacing: 2px; transition: all 0.3s; position: relative; overflow: hidden;
+    padding:13px 34px; border:none; border-radius:10px; cursor:pointer;
+    font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700;
+    letter-spacing:2px; transition:all 0.3s; position:relative; overflow:hidden;
   }
-  .btn::before {
-    content: ''; position: absolute; inset: 0;
-    background: rgba(255,255,255,0.15); opacity: 0; transition: opacity 0.3s;
+  .btn:hover { transform:translateY(-3px); box-shadow:0 10px 28px rgba(0,0,0,0.5); }
+  .btn:active { transform:translateY(0); }
+  .btn-green {
+    background:linear-gradient(145deg,#2ecc71,#27ae60);
+    color:#0d1b2a; border:2px solid #1a7a3c;
+    box-shadow:0 4px 0 #1a7a3c,0 6px 12px rgba(0,0,0,0.4);
   }
-  .btn:hover::before { opacity: 1; }
-  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
-  .btn:active { transform: translateY(0); }
-  .btn-primary { background: linear-gradient(135deg, #2ecc71, #00b894); color: #0d1b2a; }
-  .btn-secondary { background: var(--glass); color: #2ecc71; border: 1px solid var(--border); backdrop-filter: blur(10px); }
-  .btn-danger { background: linear-gradient(135deg, #e17055, #d63031); color: #fff; }
-  .btn-small { padding: 10px 24px; font-size: 12px; }
+  .btn-green:hover { box-shadow:0 6px 0 #1a7a3c,0 10px 20px rgba(46,204,113,0.4); }
+  .btn-wood {
+    background:linear-gradient(145deg,#7d5a3c,#5c3a1e);
+    color:#f0d080; border:2px solid #3a2010;
+    box-shadow:0 4px 0 #3a2010,0 6px 12px rgba(0,0,0,0.4);
+  }
+  .btn-red {
+    background:linear-gradient(145deg,#e17055,#c0392b);
+    color:#fff; border:2px solid #922b21;
+    box-shadow:0 4px 0 #922b21,0 6px 12px rgba(0,0,0,0.4);
+  }
+  .btn-small { padding:9px 22px; font-size:11px; }
+  .btn-group { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
 
-  /* ===== LEVEL SELECT ===== */
-  #level-select {
-    background: radial-gradient(ellipse at 50% 0%, #1a3a5c 0%, #060e17 70%);
-  }
-  .level-grid {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
-    max-width: 700px; margin: 24px auto;
-  }
+  /* LEVEL SELECT */
+  #level-select { background:radial-gradient(ellipse at 50% 0%,#1a3a5c 0%,#060e17 70%); }
+  .level-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; max-width:680px; margin:20px auto; }
   .level-card {
-    background: var(--glass); border: 1px solid var(--border);
-    border-radius: 14px; padding: 16px 12px; text-align: center;
-    cursor: pointer; transition: all 0.3s; backdrop-filter: blur(10px);
-    position: relative; overflow: hidden;
+    background:linear-gradient(145deg,#5c3a1e,#7d5a3c); border:3px solid #3a2010;
+    border-radius:14px; padding:14px 10px; text-align:center; cursor:pointer;
+    transition:all 0.3s; box-shadow:0 4px 12px rgba(0,0,0,0.5);
   }
-  .level-card.locked { opacity: 0.4; cursor: not-allowed; filter: grayscale(0.6); }
-  .level-card:not(.locked):hover { border-color: #2ecc71; transform: translateY(-4px); box-shadow: 0 8px 24px rgba(46,204,113,0.2); }
-  .level-card .lnum { font-family:'Orbitron',sans-serif; font-size: 22px; font-weight:900; color:#2ecc71; }
-  .level-card .lname { font-size: 10px; color: #81b59a; margin-top: 4px; }
-  .level-card .lstars { font-size: 14px; margin-top: 6px; }
-  .level-card .llock { font-size: 24px; }
-  .level-card.active-badge { border-color: #f9ca24; }
+  .level-card.locked { opacity:0.4; cursor:not-allowed; filter:grayscale(0.7); }
+  .level-card:not(.locked):hover { transform:translateY(-4px); border-color:#f9ca24; box-shadow:0 8px 24px rgba(249,202,36,0.3); }
+  .level-card .lnum { font-family:'Orbitron',sans-serif; font-size:20px; font-weight:900; color:#f9ca24; }
+  .level-card .lname { font-size:10px; color:#c8a97a; margin-top:3px; }
+  .level-card .lstars { font-size:14px; margin-top:5px; }
   .section-title {
-    font-family:'Orbitron',sans-serif; font-size: clamp(18px,3vw,28px); font-weight:700;
-    color: #2ecc71; letter-spacing: 3px; margin-bottom: 8px; text-align:center;
+    font-family:'Orbitron',sans-serif; font-size:clamp(18px,3vw,26px); font-weight:700;
+    color:#f9ca24; letter-spacing:3px; margin-bottom:6px; text-align:center;
+    text-shadow:0 2px 8px rgba(249,202,36,0.5);
   }
-  .section-sub { color: #81b59a; font-size: 13px; text-align:center; margin-bottom: 24px; }
 
-  /* ===== GAME SCREEN ===== */
-  #game { background: #060e17; padding: 0; }
-  #gameCanvas { display: block; cursor: pointer; }
+  /* GAME */
+  #game { background:#2d5a1e; padding:0; }
+  #gameCanvas { display:block; cursor:crosshair; image-rendering:pixelated; }
 
-  /* ===== HUD ===== */
+  /* TOP HUD BAR */
   #hud {
-    position: absolute; top: 0; left: 0; right: 0;
-    display: flex; align-items: center; gap: 12px; padding: 10px 16px;
-    background: linear-gradient(to bottom, rgba(6,14,23,0.95) 80%, transparent);
-    z-index: 20; flex-wrap: wrap;
+    position:absolute; top:0; left:0; right:0; z-index:20;
+    display:flex; align-items:center; gap:10px; padding:8px 14px;
+    background:linear-gradient(to bottom,rgba(15,10,5,0.95) 80%,transparent);
+    border-bottom:2px solid rgba(58,32,16,0.5);
   }
-  .hud-section { display: flex; align-items: center; gap: 8px; }
   .hud-badge {
-    background: var(--glass); border: 1px solid var(--border);
-    border-radius: 10px; padding: 6px 12px; font-size: 12px;
-    backdrop-filter: blur(8px); display:flex; align-items:center; gap:6px; white-space:nowrap;
+    background:linear-gradient(145deg,#3a2010,#5c3a1e); border:2px solid #7d5a3c;
+    border-radius:10px; padding:5px 12px; font-size:12px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.4); display:flex; align-items:center; gap:6px;
+    white-space:nowrap;
   }
-  .hud-badge .icon { font-size: 16px; }
-  .hud-badge .val { font-family:'Orbitron',sans-serif; font-weight:700; font-size:13px; color:#2ecc71; }
-  .hud-badge .label { color:#81b59a; font-size:10px; }
-  .timer-badge { border-color: rgba(241,196,15,0.4) !important; }
-  .timer-badge .val { color: #f9ca24 !important; }
-  .timer-badge.urgent .val { color: #e17055 !important; animation: pulse 0.5s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-  .hud-weather { font-size: 22px; }
-  #hud-missions { position:absolute; top:60px; right:16px; z-index:20; }
-  .mission-panel {
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 14px; padding: 12px 16px; min-width: 180px;
-    backdrop-filter: blur(12px);
-  }
-  .mission-title { font-family:'Orbitron',sans-serif; font-size:11px; color:#2ecc71; letter-spacing:2px; margin-bottom:10px; }
-  .mission-item {
-    display: flex; align-items: center; gap: 8px; font-size: 12px;
-    color: #a8d5b8; margin-bottom: 7px; transition: color 0.3s;
-  }
-  .mission-item.done { color: #2ecc71; text-decoration: line-through; opacity:0.6; }
-  .mission-item .micon { font-size: 15px; min-width:20px; text-align:center; }
-  .mission-item .mprog { font-family:'Orbitron',sans-serif; font-size:11px; color:#f9ca24; margin-left:auto; }
-  #toolbar { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); z-index:20; display:flex; gap:10px; }
-  .tool-btn {
-    background: var(--panel); border: 2px solid var(--border);
-    border-radius: 14px; padding: 10px 18px; cursor:pointer;
-    font-size: 11px; color: #a8d5b8; transition: all 0.3s;
-    text-align: center; min-width: 72px; backdrop-filter: blur(12px);
-    font-family: 'Inter', sans-serif;
-  }
-  .tool-btn .ticon { font-size: 22px; display:block; margin-bottom:4px; }
-  .tool-btn:hover, .tool-btn.active {
-    border-color: #2ecc71; color: #2ecc71;
-    box-shadow: 0 0 16px rgba(46,204,113,0.3);
-    background: rgba(46,204,113,0.1);
-  }
-  .tool-btn.active { background: rgba(46,204,113,0.18); }
-  .energy-bar-wrap {
-    position: absolute; bottom: 90px; left: 50%; transform: translateX(-50%);
-    z-index: 20; display: flex; align-items: center; gap: 10px;
-  }
-  .energy-label { font-size: 11px; color: #81b59a; white-space:nowrap; }
-  .energy-bar-bg { width: 140px; height: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow:hidden; border: 1px solid var(--border); }
-  .energy-bar-fill { height:100%; background: linear-gradient(90deg,#00b894,#00cec9); border-radius:10px; transition: width 0.3s; }
+  .hud-badge .val { font-family:'Orbitron',sans-serif; font-weight:700; font-size:13px; color:#f9ca24; }
+  .hud-badge .lbl { color:#c8a97a; font-size:10px; }
+  .timer-badge .val { color:#74b9ff !important; }
+  .timer-badge.urgent .val { color:#e17055 !important; animation:blink 0.5s ease-in-out infinite; }
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
 
-  /* ===== POPUP ===== */
+  /* MISSION PANEL */
+  #hud-missions { position:absolute; top:62px; right:14px; z-index:20; }
+  .mission-panel {
+    background:linear-gradient(145deg,#3a2010,#5c3a1e); border:3px solid #7d5a3c;
+    border-radius:14px; padding:12px 14px; min-width:175px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.6);
+  }
+  .mission-title { font-family:'Orbitron',sans-serif; font-size:10px; color:#f9ca24; letter-spacing:2px; margin-bottom:9px; border-bottom:1px solid rgba(125,90,60,0.5); padding-bottom:6px; }
+  .mission-item { display:flex; align-items:center; gap:7px; font-size:12px; color:#c8a97a; margin-bottom:6px; transition:color 0.3s; }
+  .mission-item.done { color:#2ecc71; text-decoration:line-through; opacity:0.65; }
+  .mission-item .micon { font-size:14px; min-width:18px; text-align:center; }
+  .mission-item .mprog { font-family:'Orbitron',sans-serif; font-size:10px; color:#f9ca24; margin-left:auto; }
+  .mission-item.done .mprog { color:#2ecc71; }
+
+  /* TOOLBAR */
+  #toolbar { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); z-index:20; display:flex; gap:8px; }
+  .tool-btn {
+    background:linear-gradient(145deg,#3a2010,#5c3a1e); border:3px solid #7d5a3c;
+    border-radius:14px; padding:8px 16px; cursor:pointer; font-size:10px;
+    color:#c8a97a; transition:all 0.25s; text-align:center; min-width:70px;
+    box-shadow:0 4px 0 #3a2010,0 6px 12px rgba(0,0,0,0.5);
+    font-family:'Inter',sans-serif;
+  }
+  .tool-btn .ticon { font-size:20px; display:block; margin-bottom:3px; }
+  .tool-btn:hover, .tool-btn.active {
+    border-color:#f9ca24; color:#f9ca24;
+    box-shadow:0 4px 0 #7a5a00,0 6px 20px rgba(249,202,36,0.3);
+    background:linear-gradient(145deg,#5c3a1e,#7d5a3c);
+  }
+  .tool-btn:active { transform:translateY(2px); box-shadow:0 2px 0 #3a2010,0 4px 8px rgba(0,0,0,0.4); }
+
+  /* ENERGY BAR */
+  .energy-wrap {
+    position:absolute; bottom:86px; left:50%; transform:translateX(-50%);
+    z-index:20; display:flex; align-items:center; gap:8px;
+  }
+  .energy-lbl { font-size:10px; color:#c8a97a; white-space:nowrap; }
+  .energy-bg { width:130px; height:10px; background:rgba(0,0,0,0.4); border-radius:10px; border:2px solid #5c3a1e; overflow:hidden; }
+  .energy-fill { height:100%; background:linear-gradient(90deg,#27ae60,#2ecc71); border-radius:8px; transition:width 0.3s; }
+
+  /* UPGRADE PANEL */
+  #upgrade-panel {
+    position:absolute; left:14px; top:62px; z-index:20;
+    background:linear-gradient(145deg,#3a2010,#5c3a1e); border:3px solid #7d5a3c;
+    border-radius:14px; padding:12px; min-width:148px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.6); display:none;
+  }
+  #upgrade-panel.show { display:block; }
+  .upg-title { font-family:'Orbitron',sans-serif; font-size:10px; color:#f9ca24; letter-spacing:2px; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid rgba(125,90,60,0.5); }
+  .upg-item { display:flex; align-items:center; gap:7px; padding:6px 7px; border-radius:8px; cursor:pointer; transition:background 0.2s; font-size:11px; }
+  .upg-item:hover { background:rgba(249,202,36,0.1); }
+  .upg-item .ui-icon { font-size:17px; }
+  .upg-item .ui-name { color:#c8a97a; flex:1; }
+  .upg-item .ui-cost { color:#f9ca24; font-family:'Orbitron',sans-serif; font-size:9px; }
+  .upg-item.bought .ui-name { color:#2ecc71; }
+  .upg-item.bought .ui-cost { color:#81b59a; font-size:10px; }
+
+  /* POPUPS */
   .popup-overlay {
-    position: absolute; inset:0; background: rgba(6,14,23,0.85);
+    position:absolute; inset:0; background:rgba(0,0,0,0.75);
     display:flex; align-items:center; justify-content:center; z-index:50;
-    backdrop-filter: blur(6px); transition: opacity 0.4s;
+    backdrop-filter:blur(6px); transition:opacity 0.4s;
   }
   .popup-overlay.hidden { opacity:0; pointer-events:none; }
   .popup-box {
-    background: linear-gradient(145deg, #0d2a18, #0d1b2a);
-    border: 1px solid var(--border); border-radius: 24px;
-    padding: 40px 48px; text-align: center; max-width: 460px; width: 90%;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
-    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    background:linear-gradient(145deg,#2d1e0e,#3a2a14); border:4px solid #7d5a3c;
+    border-radius:24px; padding:36px 44px; text-align:center;
+    max-width:440px; width:90%; box-shadow:0 24px 80px rgba(0,0,0,0.8);
+    animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
   }
-  @keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
-  .popup-icon { font-size: 72px; display:block; margin-bottom: 16px; }
-  .popup-title { font-family:'Orbitron',sans-serif; font-size: 24px; font-weight:900; color:#2ecc71; margin-bottom:8px; }
-  .popup-sub { color: #81b59a; font-size: 14px; margin-bottom: 24px; line-height:1.7; }
-  .stars-display { font-size: 40px; margin-bottom: 24px; letter-spacing: 8px; }
-  .score-display { font-family:'Orbitron',sans-serif; font-size:32px; color:#f9ca24; margin-bottom:8px; }
-  .score-label { color:#81b59a; font-size:13px; margin-bottom:28px; }
+  @keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
+  .popup-icon { font-size:68px; display:block; margin-bottom:14px; }
+  .popup-title { font-family:'Orbitron',sans-serif; font-size:22px; font-weight:900; color:#f9ca24; margin-bottom:8px; text-shadow:0 2px 8px rgba(249,202,36,0.4); }
+  .popup-sub { color:#c8a97a; font-size:13px; margin-bottom:20px; line-height:1.8; }
+  .stars-display { font-size:38px; margin-bottom:20px; letter-spacing:6px; }
+  .score-display { font-family:'Orbitron',sans-serif; font-size:30px; color:#f9ca24; margin-bottom:6px; }
+  .score-label { color:#81b59a; font-size:12px; margin-bottom:24px; }
 
-  /* ===== NOTIFICATIONS ===== */
-  #notif-wrap { position:absolute; top:70px; left:16px; z-index:30; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+  /* NOTIFS */
+  #notif-wrap { position:absolute; top:68px; left:14px; z-index:30; display:flex; flex-direction:column; gap:7px; pointer-events:none; }
   .notif {
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 10px; padding: 8px 14px; font-size: 12px; color: #e0f7e9;
-    backdrop-filter: blur(10px); display:flex; align-items:center; gap:8px;
-    animation: slideIn 0.3s ease-out;
-    max-width: 220px;
+    background:linear-gradient(145deg,#2d1e0e,#3a2a14); border:2px solid #7d5a3c;
+    border-radius:10px; padding:7px 13px; font-size:11px; color:#e0d0b0;
+    display:flex; align-items:center; gap:7px;
+    animation:slideIn 0.3s ease-out; max-width:210px;
   }
-  @keyframes slideIn { from{transform:translateX(-20px);opacity:0} to{transform:translateX(0);opacity:1} }
-  .notif.pos { border-color: rgba(46,204,113,0.5); }
-  .notif.neg { border-color: rgba(231,76,60,0.5); color: #fab1a0; }
-  .notif.info { border-color: rgba(116,185,255,0.5); color: #74b9ff; }
+  @keyframes slideIn{from{transform:translateX(-18px);opacity:0}to{transform:translateX(0);opacity:1}}
+  .notif.pos { border-color:rgba(46,204,113,0.6); color:#a8d5b8; }
+  .notif.neg { border-color:rgba(231,76,60,0.6); color:#fab1a0; }
+  .notif.info { border-color:rgba(116,185,255,0.6); color:#74b9ff; }
 
-  /* ===== SCROLLBAR ===== */
-  ::-webkit-scrollbar { width:6px; } ::-webkit-scrollbar-track{background:#0d1b2a} ::-webkit-scrollbar-thumb{background:#2ecc71;border-radius:3px}
-
-  /* ===== UPGRADE PANEL ===== */
-  #upgrade-panel {
-    position: absolute; left: 16px; top: 60px; z-index: 20;
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 14px; padding: 12px; min-width: 140px;
-    backdrop-filter: blur(12px); display: none;
+  /* LOADING */
+  #loading-overlay {
+    position:absolute; inset:0; background:rgba(15,10,5,0.95);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    z-index:100;
   }
-  #upgrade-panel.show { display: block; }
-  .upg-item { display:flex; align-items:center; gap:8px; padding:7px 8px; border-radius:8px; cursor:pointer; transition:background 0.2s; font-size:11px; }
-  .upg-item:hover { background: rgba(46,204,113,0.1); }
-  .upg-item .upg-icon { font-size:18px; }
-  .upg-item .upg-name { color:#a8d5b8; flex:1; }
-  .upg-item .upg-cost { color:#f9ca24; font-family:'Orbitron',sans-serif; font-size:10px; }
-  .upg-item.bought .upg-name { color:#2ecc71; }
-  .upg-item.bought .upg-cost { color:#81b59a; }
-  .upg-panel-title { font-family:'Orbitron',sans-serif; font-size:10px; color:#2ecc71; letter-spacing:2px; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .loading-bar-bg { width:280px; height:18px; background:rgba(0,0,0,0.5); border-radius:10px; border:2px solid #5c3a1e; overflow:hidden; margin-top:20px; }
+  .loading-bar-fill { height:100%; background:linear-gradient(90deg,#27ae60,#2ecc71); border-radius:8px; transition:width 0.2s; width:0%; }
+  .loading-text { font-family:'Orbitron',sans-serif; font-size:14px; color:#f9ca24; margin-top:12px; letter-spacing:2px; }
 </style>
 </head>
 <body>
 
-<!-- ===== MAIN MENU ===== -->
-<div id="menu" class="screen">
-  <div class="menu-bg-trees" id="menuBgTrees"></div>
+<!-- LOADING -->
+<div id="loading-overlay">
+  <div style="font-size:60px; animation:float 2s ease-in-out infinite">🌿</div>
+  <div class="logo-title" style="font-size:32px; margin-top:16px">ECO GUARDIAN</div>
+  <div class="loading-bar-bg"><div class="loading-bar-fill" id="loadBar"></div></div>
+  <div class="loading-text" id="loadText">Memuat aset...</div>
+</div>
+
+<!-- MAIN MENU -->
+<div id="menu" class="screen hidden">
+  <canvas id="menuCanvas" class="menu-canvas-bg"></canvas>
   <div class="logo-wrap">
     <span class="logo-icon">🌿</span>
     <div class="logo-title">ECO GUARDIAN</div>
     <div class="logo-sub">SELAMATKAN BUMI · TAHUN 2050</div>
   </div>
-  <div class="story-box">
-    Tahun 2050. Hutan mengalami kerusakan akibat kebakaran, penebangan liar, dan pencemaran.<br><br>
-    Bergabunglah dengan <strong>Tim Eco Guardian</strong> dan pulihkan ekosistem sebelum semuanya terlambat.<br><br>
-    <strong>Misi utamamu bukan mengalahkan musuh — melainkan mengembalikan keseimbangan alam.</strong>
+  <div class="wood-panel" style="max-width:520px;text-align:center;margin-bottom:32px">
+    <div style="color:#c8a97a;font-size:13px;line-height:1.9">
+      Tahun 2050. Hutan hancur akibat kebakaran, penebangan liar, dan pencemaran.<br>
+      Bergabunglah dengan <strong style="color:#f9ca24">Tim Eco Guardian</strong> dan pulihkan ekosistem<br>
+      sebelum semuanya terlambat.
+    </div>
   </div>
   <div class="btn-group">
-    <button class="btn btn-primary" onclick="showScreen('level-select')">⚡ MULAI BERMAIN</button>
-    <button class="btn btn-secondary" onclick="showHowTo()">📖 CARA MAIN</button>
+    <button class="btn btn-green" onclick="showScreen('level-select')">⚡ MULAI BERMAIN</button>
+    <button class="btn btn-wood" onclick="showHowTo()">📖 CARA MAIN</button>
   </div>
 </div>
 
-<!-- ===== LEVEL SELECT ===== -->
+<!-- LEVEL SELECT -->
 <div id="level-select" class="screen hidden">
-  <div class="logo-wrap" style="margin-bottom:16px">
-    <div class="logo-title" style="font-size:clamp(20px,3vw,36px)">PILIH LEVEL</div>
-    <div class="logo-sub">10 misi menyelamatkan bumi</div>
-  </div>
+  <div class="section-title" style="margin-bottom:6px">🗺️ PILIH MISI</div>
+  <div style="color:#81b59a;font-size:12px;margin-bottom:16px;letter-spacing:1px">10 misi menyelamatkan alam</div>
   <div class="level-grid" id="levelGrid"></div>
-  <button class="btn btn-secondary btn-small" onclick="showScreen('menu')" style="margin-top:8px">← Kembali</button>
+  <button class="btn btn-wood btn-small" onclick="showScreen('menu')" style="margin-top:10px">← Kembali</button>
 </div>
 
-<!-- ===== GAME SCREEN ===== -->
+<!-- GAME -->
 <div id="game" class="screen hidden">
   <!-- HUD -->
   <div id="hud">
     <div class="hud-badge">
-      <span class="icon">⭐</span>
-      <div><div class="val" id="hudScore">0</div><div class="label">SKOR</div></div>
+      <span>⭐</span>
+      <div><div class="val" id="hudScore">0</div><div class="lbl">SKOR</div></div>
     </div>
     <div class="hud-badge timer-badge" id="timerBadge">
-      <span class="icon">⏱</span>
-      <div><div class="val" id="hudTimer">5:00</div><div class="label">WAKTU</div></div>
+      <span>⏱</span>
+      <div><div class="val" id="hudTimer">5:00</div><div class="lbl">WAKTU</div></div>
     </div>
     <div class="hud-badge">
-      <span class="icon hud-weather" id="hudWeather">☀️</span>
-      <div><div class="val" id="hudWeatherName">CERAH</div><div class="label">CUACA</div></div>
+      <span id="hudWeatherIcon">☀️</span>
+      <div><div class="val" id="hudWeatherName" style="font-size:11px">CERAH</div><div class="lbl">CUACA</div></div>
     </div>
     <div class="hud-badge">
-      <span class="icon">⚡</span>
-      <div><div class="val" id="hudEnergy">100</div><div class="label">ENERGI</div></div>
+      <span>⚡</span>
+      <div><div class="val" id="hudEnergy">100</div><div class="lbl">ENERGI</div></div>
     </div>
-    <div style="margin-left:auto; display:flex; gap:8px;">
-      <button class="btn btn-secondary btn-small" onclick="togglePause()" id="btnPause">⏸ Pause</button>
-      <button class="btn btn-secondary btn-small" onclick="exitGame()">✕ Keluar</button>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="btn btn-wood btn-small" onclick="togglePause()" id="btnPause">⏸ Pause</button>
+      <button class="btn btn-red btn-small" onclick="exitGame()">✕ Keluar</button>
     </div>
   </div>
 
-  <!-- Mission Panel -->
+  <!-- Mission panel -->
   <div id="hud-missions">
     <div class="mission-panel">
       <div class="mission-title">🎯 TARGET MISI</div>
@@ -317,19 +297,19 @@
     </div>
   </div>
 
-  <!-- Notifications -->
+  <!-- Notifs -->
   <div id="notif-wrap"></div>
 
-  <!-- Upgrade Panel -->
+  <!-- Upgrade panel -->
   <div id="upgrade-panel">
-    <div class="upg-panel-title">🔬 UPGRADE</div>
+    <div class="upg-title">🔬 UPGRADE</div>
     <div id="upgList"></div>
   </div>
 
   <!-- Energy bar -->
-  <div class="energy-bar-wrap">
-    <span class="energy-label">⚡ ENERGI</span>
-    <div class="energy-bar-bg"><div class="energy-bar-fill" id="energyFill" style="width:100%"></div></div>
+  <div class="energy-wrap">
+    <span class="energy-lbl">⚡ ENERGI</span>
+    <div class="energy-bg"><div class="energy-fill" id="energyFill"></div></div>
   </div>
 
   <!-- Toolbar -->
@@ -354,20 +334,20 @@
   <!-- Canvas -->
   <canvas id="gameCanvas"></canvas>
 
-  <!-- Pause Overlay -->
+  <!-- Pause -->
   <div class="popup-overlay hidden" id="pauseOverlay">
     <div class="popup-box">
       <span class="popup-icon">⏸</span>
-      <div class="popup-title">GAME DIJEDA</div>
+      <div class="popup-title">DIJEDA</div>
       <div class="popup-sub">Ambil nafas sejenak, alam sedang menunggumu...</div>
       <div class="btn-group" style="justify-content:center">
-        <button class="btn btn-primary" onclick="togglePause()">▶ Lanjutkan</button>
-        <button class="btn btn-secondary" onclick="exitGame()">← Keluar</button>
+        <button class="btn btn-green" onclick="togglePause()">▶ Lanjutkan</button>
+        <button class="btn btn-wood" onclick="exitGame()">← Keluar</button>
       </div>
     </div>
   </div>
 
-  <!-- Level Complete Overlay -->
+  <!-- Complete -->
   <div class="popup-overlay hidden" id="completeOverlay">
     <div class="popup-box">
       <span class="popup-icon" id="completeIcon">🌟</span>
@@ -377,203 +357,771 @@
       <div class="score-label">TOTAL SKOR</div>
       <div class="popup-sub" id="completeMsg"></div>
       <div class="btn-group" style="justify-content:center">
-        <button class="btn btn-primary" id="btnNextLevel" onclick="nextLevel()">LEVEL BERIKUTNYA →</button>
-        <button class="btn btn-secondary" onclick="exitGame()">← Menu</button>
+        <button class="btn btn-green" id="btnNextLevel" onclick="nextLevel()">LEVEL BERIKUTNYA →</button>
+        <button class="btn btn-wood" onclick="exitGame()">← Menu</button>
       </div>
     </div>
   </div>
 
-  <!-- Game Over Overlay -->
+  <!-- Game Over -->
   <div class="popup-overlay hidden" id="gameoverOverlay">
     <div class="popup-box">
       <span class="popup-icon">💔</span>
       <div class="popup-title" style="color:#e17055">MISI GAGAL</div>
-      <div class="popup-sub">Alam membutuhkan lebih banyak bantuan. Coba lagi dan selamatkan ekosistem!</div>
+      <div class="popup-sub">Alam membutuhkan lebih banyak bantuan. Coba lagi!</div>
       <div class="score-display" id="gameoverScore">0</div>
       <div class="score-label">SKOR AKHIR</div>
-      <div class="btn-group" style="justify-content:center; margin-top:16px">
-        <button class="btn btn-primary" onclick="restartLevel()">🔄 Coba Lagi</button>
-        <button class="btn btn-secondary" onclick="exitGame()">← Menu</button>
+      <div class="btn-group" style="justify-content:center;margin-top:16px">
+        <button class="btn btn-green" onclick="restartLevel()">🔄 Coba Lagi</button>
+        <button class="btn btn-wood" onclick="exitGame()">← Menu</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-// ===========================
-// GAME DATA & CONFIG
-// ===========================
-const LEVELS = [
-  { id:1, name:'Taman Kota',     icon:'🏙️', desc:'Bersihkan taman kota yang rusak',     time:300, targets:{ trees:15, trash:15, fires:3, animals:3 } },
-  { id:2, name:'Sungai Tercemar', icon:'🏞️', desc:'Pulihkan sungai yang tercemar',       time:300, targets:{ trees:10, trash:25, fires:2, animals:4 } },
-  { id:3, name:'Kebakaran Kecil', icon:'🔥', desc:'Padamkan kebakaran hutan kecil',      time:280, targets:{ trees:20, trash:10, fires:6, animals:5 } },
-  { id:4, name:'Selamatkan Satwa',icon:'🦌', desc:'Selamatkan hewan yang terancam',      time:270, targets:{ trees:15, trash:10, fires:4, animals:8 } },
-  { id:5, name:'Penebangan Liar', icon:'🪵', desc:'Hentikan penebangan dan pulihkan hutan', time:300, targets:{ trees:30, trash:20, fires:5, animals:6 } },
-  { id:6, name:'Kekeringan',     icon:'🌵', desc:'Atasi kekeringan dan selamatkan ekosistem', time:280, targets:{ trees:25, trash:15, fires:4, animals:5 } },
-  { id:7, name:'Kebakaran Besar', icon:'🌋', desc:'Padamkan kebakaran besar yang mengancam', time:260, targets:{ trees:20, trash:15, fires:10, animals:7 } },
-  { id:8, name:'Hutan Tropis',   icon:'🌴', desc:'Pulihkan hutan hujan tropis',          time:350, targets:{ trees:40, trash:20, fires:6, animals:10 } },
-  { id:9, name:'Taman Nasional', icon:'⛰️', desc:'Lindungi taman nasional',             time:350, targets:{ trees:35, trash:25, fires:8, animals:12 } },
-  { id:10, name:'Misi Terakhir', icon:'🌏', desc:'Selamatkan seluruh kawasan konservasi', time:400, targets:{ trees:50, trash:30, fires:12, animals:15 } },
+// =============================================
+// ASSET LOADER
+// =============================================
+const ASSETS = {};       // raw loaded Image objects
+const ASSETS_CLEAN = {}; // background-removed canvas objects
+const ASSET_LIST = [
+  { key:'terrain', src:'assets/terrain.png' },
+  { key:'terrain2',src:'assets/terrain2.png' }, // new 11x2 tileset
+  { key:'trees',   src:'assets/trees.png'   },
+  { key:'trees2',  src:'assets/trees2.png'  },  // new 6-type pixel art sheet
+  { key:'deer',    src:'assets/deer.png'     },
+  { key:'fire',    src:'assets/fire.png'     },
+  { key:'fire2',   src:'assets/fire2.png'    },  // new clean 4-frame fire
+  { key:'trash',   src:'assets/trash.png'    },
+  { key:'ui',      src:'assets/ui.png'       },
 ];
 
-const WEATHER_TYPES = [
-  { id:'sunny',  icon:'☀️',  name:'CERAH',   fireSpread:1.0, treeGrow:1.3, slippery:false },
-  { id:'rain',   icon:'🌧️',  name:'HUJAN',   fireSpread:0.3, treeGrow:1.0, slippery:true  },
-  { id:'wind',   icon:'🌪️',  name:'ANGIN',   fireSpread:2.5, treeGrow:0.8, slippery:false },
-  { id:'winter', icon:'❄️',  name:'DINGIN',  fireSpread:0.5, treeGrow:0.4, slippery:false },
-];
+/**
+ * removeBackground – robust pixel-level background removal.
+ *
+ * Uses HSV SATURATION instead of corner-colour sampling.
+ * This works correctly even when content pixels fill all 4 corners
+ * (e.g. the trees spritesheet where trees touch every edge).
+ *
+ * A pixel is treated as BACKGROUND when:
+ *   - It is already transparent (alpha < 20), OR
+ *   - Its HSV saturation is very low (< 0.18) AND luma is bright (> 130),
+ *     which matches grey / off-white / near-white flat AI backgrounds.
+ *
+ * Connected-edge BFS ensures only pixels REACHABLE from the image border
+ * are removed, so identically-grey interior pixels (like deer shadow) survive.
+ *
+ * For multi-frame spritesheets (fire: 3 cols, trash: 3 cols) extra seed
+ * points are injected along the column dividers so interior background
+ * between frames is also caught.
+ */
+function removeBackground(img, numFrameCols = 1) {
+  if (!img) return null;
 
-const UPGRADES = [
-  { id:'fastGrow',   icon:'🌱', name:'Bibit Cepat',  cost:80,  desc:'Pohon tumbuh 2x lebih cepat' },
-  { id:'autoDrone',  icon:'🚁', name:'Drone Penyiram',cost:120, desc:'Otomatis padamkan api kecil'  },
-  { id:'bigTruck',   icon:'🚒', name:'Mobil Besar',   cost:150, desc:'Padamkan api 2x lebih cepat'  },
-  { id:'fastClean',  icon:'🧤', name:'Alat Cepat',    cost:100, desc:'Bersihkan 2x lebih cepat'    },
-  { id:'sensor',     icon:'🛰️', name:'Sensor Api',    cost:180, desc:'Deteksi api dari jauh'       },
-];
+  const oc = document.createElement('canvas');
+  oc.width  = img.width;
+  oc.height = img.height;
+  const ox = oc.getContext('2d', { willReadFrequently: true });
+  ox.drawImage(img, 0, 0);
 
-const ANIMAL_TYPES = ['🦌','🐇','🦜','🦧','🐿️','🦊'];
-const TRASH_TYPES = ['🛢️','🧴','🏚️'];
-const TREE_STAGES = ['🌱','🌿','🌳'];
+  let idata;
+  try { idata = ox.getImageData(0, 0, oc.width, oc.height); }
+  catch(e) { return oc; } // canvas tainted – return unmodified
 
-// Save data
-let saveData = { unlockedLevels: [1], stars: {}, highScores: {} };
-try { const s = localStorage.getItem('ecoGuardianSave'); if(s) saveData = JSON.parse(s); } catch(e){}
+  const d  = idata.data;
+  const W  = oc.width, H = oc.height;
 
-// Game state
-let gs = {
-  running: false, paused: false, currentLevel: 1,
-  score: 0, energy: 100, time: 300,
-  tool: 'plant',
-  weather: WEATHER_TYPES[0], weatherTimer: 0,
-  objects: [],
-  done: { trees:0, trash:0, fires:0, animals:0 },
-  upgrades: {},
-  lastTime: 0,
-  nextObjId: 0,
-};
+  // --- Pass 1: mark every pixel that looks like background ---
+  const bgMask = new Uint8Array(W * H);
+  for (let i = 0; i < W * H; i++) {
+    const p = i * 4;
+    const r = d[p], g = d[p+1], b = d[p+2], a = d[p+3];
 
-// Canvas
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+    if (a < 20) { bgMask[i] = 1; continue; }
 
-// Particles
-let particles = [];
+    // HSV saturation  s = (max - min) / max
+    const maxC = Math.max(r, g, b);
+    const minC = Math.min(r, g, b);
+    const sat  = maxC > 0 ? (maxC - minC) / maxC : 0;
+    const luma = 0.299*r + 0.587*g + 0.114*b;
 
-// ===========================
-// SCREEN MANAGEMENT
-// ===========================
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-  if(id === 'level-select') buildLevelGrid();
+    // Low-saturation AND bright → grey/white background
+    if (sat < 0.18 && luma > 128) { bgMask[i] = 1; continue; }
+    // Very bright regardless of saturation (near-white)
+    if (minC > 210) { bgMask[i] = 1; }
+  }
+
+  // --- Pass 2: BFS flood-fill from border + frame-divider columns ---
+  const queue = [];
+
+  // Seed from all four edges
+  for (let x = 0; x < W; x++) {
+    if (bgMask[x])           queue.push(x);          // top row
+    if (bgMask[(H-1)*W + x]) queue.push((H-1)*W + x); // bottom row
+  }
+  for (let y = 1; y < H-1; y++) {
+    if (bgMask[y*W])       queue.push(y*W);       // left col
+    if (bgMask[y*W + W-1]) queue.push(y*W + W-1); // right col
+  }
+
+  // Seed from frame-divider columns (for multi-frame sprites like fire / trash)
+  if (numFrameCols > 1) {
+    for (let f = 1; f < numFrameCols; f++) {
+      const colX = Math.round(f * W / numFrameCols);
+      for (let y = 0; y < H; y++) {
+        const idx = y * W + colX;
+        if (bgMask[idx]) queue.push(idx);
+        // Also seed one pixel either side of the divider
+        if (colX > 0   && bgMask[idx-1]) queue.push(idx-1);
+        if (colX < W-1 && bgMask[idx+1]) queue.push(idx+1);
+      }
+    }
+  }
+
+  const connected = new Uint8Array(W * H);
+  let qi = 0;
+  while (qi < queue.length) {
+    const idx = queue[qi++];
+    if (connected[idx]) continue;
+    connected[idx] = 1;
+    const x = idx % W, y = (idx / W) | 0;
+    if (x > 0   && bgMask[idx-1] && !connected[idx-1]) queue.push(idx-1);
+    if (x < W-1 && bgMask[idx+1] && !connected[idx+1]) queue.push(idx+1);
+    if (y > 0   && bgMask[idx-W] && !connected[idx-W]) queue.push(idx-W);
+    if (y < H-1 && bgMask[idx+W] && !connected[idx+W]) queue.push(idx+W);
+  }
+
+  // --- Pass 3: make connected pixels transparent ---
+  for (let i = 0; i < W*H; i++) {
+    if (connected[i]) d[i*4+3] = 0;
+  }
+
+  // --- Pass 4: feather edges (smooth jagged outlines) ---
+  const idata2 = new ImageData(new Uint8ClampedArray(d), W, H);
+  const d2 = idata2.data;
+  for (let y = 1; y < H-1; y++) for (let x = 1; x < W-1; x++) {
+    const i = (y*W + x)*4;
+    if (d2[i+3] > 0) {
+      let tc = 0;
+      if (d2[((y-1)*W+x)*4+3] === 0) tc++;
+      if (d2[((y+1)*W+x)*4+3] === 0) tc++;
+      if (d2[(y*W+x-1)*4+3]   === 0) tc++;
+      if (d2[(y*W+x+1)*4+3]   === 0) tc++;
+      if (tc >= 3)      d2[i+3] = Math.round(d2[i+3] * 0.20);
+      else if (tc >= 2) d2[i+3] = Math.round(d2[i+3] * 0.45);
+      else if (tc >= 1) d2[i+3] = Math.round(d2[i+3] * 0.75);
+    }
+  }
+
+  ox.putImageData(idata2, 0, 0);
+  return oc;
 }
 
-function saveProg() {
-  try { localStorage.setItem('ecoGuardianSave', JSON.stringify(saveData)); } catch(e){}
+/**
+ * removeDarkBackground – for sprites on BLACK (#000) background.
+ * Makes every pixel whose luma is below a threshold fully transparent.
+ * Much simpler and 100% reliable compared to HSV saturation method.
+ * Use for trees2.png and fire2.png which were generated on pure black bg.
+ */
+function removeBeigeBackground(img) {
+  if (!img) return null;
+  const oc = document.createElement('canvas');
+  oc.width = img.width; oc.height = img.height;
+  const ox = oc.getContext('2d', { willReadFrequently: true });
+  ox.drawImage(img, 0, 0);
+  let idata;
+  try { idata = ox.getImageData(0, 0, oc.width, oc.height); } catch(e) { return oc; }
+  const d = idata.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const r = d[i], g = d[i+1], b = d[i+2];
+    if (Math.abs(r - 208) < 20 && Math.abs(g - 198) < 20 && Math.abs(b - 178) < 20) {
+      d[i+3] = 0; // transparent
+    }
+  }
+  ox.putImageData(idata, 0, 0);
+  return oc;
 }
 
-// ===========================
-// LEVEL SELECT
-// ===========================
-function buildLevelGrid() {
-  const grid = document.getElementById('levelGrid');
-  grid.innerHTML = '';
-  LEVELS.forEach(lv => {
-    const unlocked = saveData.unlockedLevels.includes(lv.id);
-    const stars = saveData.stars[lv.id] || 0;
-    const starStr = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
-    const card = document.createElement('div');
-    card.className = 'level-card' + (unlocked ? '' : ' locked') + (lv.id === 1 ? ' active-badge' : '');
-    card.innerHTML = unlocked
-      ? `<div class="lnum">${lv.icon}</div>
-         <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:#2ecc71;margin:3px 0">${lv.id}</div>
-         <div class="lname">${lv.name}</div>
-         <div class="lstars">${starStr}</div>`
-      : `<div class="llock">🔒</div>
-         <div class="lname">Level ${lv.id}</div>`;
-    if(unlocked) card.onclick = () => startLevel(lv.id);
-    grid.appendChild(card);
+function removeDarkBackground(img, lumaThreshold = 28) {
+  if (!img) return null;
+  const oc = document.createElement('canvas');
+  oc.width = img.width; oc.height = img.height;
+  const ox = oc.getContext('2d', { willReadFrequently: true });
+  ox.drawImage(img, 0, 0);
+  let idata;
+  try { idata = ox.getImageData(0, 0, oc.width, oc.height); } catch(e) { return oc; }
+  const d = idata.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const luma = 0.299*d[i] + 0.587*d[i+1] + 0.114*d[i+2];
+    if (luma < lumaThreshold) d[i+3] = 0;     // fully transparent
+    else if (luma < lumaThreshold * 2.5) d[i+3] = Math.round(d[i+3] * (luma - lumaThreshold) / (lumaThreshold * 1.5)); // feather
+  }
+  ox.putImageData(idata, 0, 0);
+  return oc;
+}
+
+/**
+ * Auto-slices an AI-generated sprite sheet by finding the bounding boxes of isolated non-transparent groups.
+ * This perfectly handles uneven padding, arbitrary grids, and prevents "half-cut" sprites.
+ * Caches the result on the canvas object.
+ */
+function autoSliceSprites(canvas) {
+  if (!canvas || !canvas.width) return [];
+  if (canvas._frames) return canvas._frames;
+  const ctx = canvas.getContext('2d', {willReadFrequently: true});
+  const W = canvas.width, H = canvas.height;
+  const idata = ctx.getImageData(0,0,W,H);
+  const d = idata.data;
+  const visited = new Uint8Array(W*H);
+  const frames = [];
+
+  for(let i=0; i<W*H; i++) {
+    if (d[i*4+3] > 10 && !visited[i]) {
+      const q = [i];
+      visited[i] = 1;
+      let minX=i%W, maxX=i%W, minY=Math.floor(i/W), maxY=Math.floor(i/W);
+      let head = 0;
+      while(head < q.length) {
+        const idx = q[head++];
+        const x = idx%W, y = Math.floor(idx/W);
+        if (x<minX) minX=x; if (x>maxX) maxX=x;
+        if (y<minY) minY=y; if (y>maxY) maxY=y;
+        if (x>0 && d[(idx-1)*4+3]>10 && !visited[idx-1]) { visited[idx-1]=1; q.push(idx-1); }
+        if (x<W-1 && d[(idx+1)*4+3]>10 && !visited[idx+1]) { visited[idx+1]=1; q.push(idx+1); }
+        if (y>0 && d[(idx-W)*4+3]>10 && !visited[idx-W]) { visited[idx-W]=1; q.push(idx-W); }
+        if (y<H-1 && d[(idx+W)*4+3]>10 && !visited[idx+W]) { visited[idx+W]=1; q.push(idx+W); }
+      }
+      const w = maxX - minX + 1, h = maxY - minY + 1;
+      if (w > 15 && h > 15) frames.push({x:minX, y:minY, w, h});
+    }
+  }
+
+  // Merge nearby boxes (within 12 pixels) in case a sprite has disconnected parts
+  let merged = true;
+  while(merged) {
+    merged = false;
+    for(let i=0; i<frames.length; i++) {
+      for(let j=i+1; j<frames.length; j++) {
+        const a=frames[i], b=frames[j];
+        if (a.x < b.x+b.w+12 && a.x+a.w+12 > b.x && a.y < b.y+b.h+12 && a.y+a.h+12 > b.y) {
+          a.x = Math.min(a.x, b.x); a.y = Math.min(a.y, b.y);
+          a.w = Math.max(a.x+a.w, b.x+b.w) - a.x; a.h = Math.max(a.y+a.h, b.y+b.h) - a.y;
+          frames.splice(j,1); merged = true; break;
+        }
+      }
+      if (merged) break;
+    }
+  }
+
+  // Sort top-to-bottom (rows), then left-to-right
+  frames.sort((a,b) => (Math.abs(a.y-b.y)>40 ? a.y-b.y : a.x-b.x));
+  
+  canvas._frames = frames;
+  return frames;
+}
+
+function loadAssets(onDone) {
+  let loaded = 0;
+  const total = ASSET_LIST.length;
+  const bar = document.getElementById('loadBar');
+  const txt = document.getElementById('loadText');
+
+  ASSET_LIST.forEach(({key, src}) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      ASSETS[key] = img;
+      // trees2 and fire2 are on black bg → use dark removal
+      if (key === 'trees2' || key === 'fire2') {
+        txt.textContent = `Memproses: ${src}...`;
+        ASSETS_CLEAN[key] = removeDarkBackground(img, 30);
+      } else if (key === 'terrain2') {
+        txt.textContent = `Memproses: ${src}...`;
+        ASSETS_CLEAN[key] = removeBeigeBackground(img);
+      } else if (key !== 'terrain' && key !== 'ui') {
+        txt.textContent = `Memproses: ${src}...`;
+        const frameCols = (key === 'fire' || key === 'trash') ? 3
+                        : (key === 'deer') ? 2
+                        : 1;
+        ASSETS_CLEAN[key] = removeBackground(img, frameCols);
+      }
+      loaded++;
+      bar.style.width = (loaded / total * 100) + '%';
+      txt.textContent = `Dimuat: ${src}`;
+      if (loaded === total) { setTimeout(onDone, 400); }
+    };
+    img.onerror = () => {
+      ASSETS[key] = null;
+      ASSETS_CLEAN[key] = null;
+      loaded++;
+      bar.style.width = (loaded / total * 100) + '%';
+      if (loaded === total) { setTimeout(onDone, 400); }
+    };
+    img.src = src;
   });
 }
 
-// ===========================
-// HOW TO PLAY
-// ===========================
-function showHowTo() {
-  const popup = document.createElement('div');
-  popup.className = 'popup-overlay';
-  popup.style.zIndex = '100';
-  popup.innerHTML = `
-    <div class="popup-box" style="max-width:520px;max-height:80vh;overflow-y:auto;text-align:left">
-      <div class="popup-title" style="text-align:center;margin-bottom:16px">📖 CARA BERMAIN</div>
-      <div style="font-size:13px;color:#a8d5b8;line-height:2">
-        <strong style="color:#2ecc71">🌱 Menanam Pohon</strong><br>
-        Pilih tool Tanam, klik area tanah yang berwarna coklat/hijau gelap untuk menanam bibit. Pohon akan tumbuh perlahan.<br><br>
-        <strong style="color:#e17055">💧 Memadamkan Api</strong><br>
-        Pilih tool Padamkan, klik pada titik api 🔥. Api akan menyebar bila dibiarkan, terutama saat angin kencang!<br><br>
-        <strong style="color:#f9ca24">🦌 Menyelamatkan Satwa</strong><br>
-        Pilih tool Selamatkan, klik hewan yang panik. Mereka akan diarahkan ke zona aman (area hijau).<br><br>
-        <strong style="color:#74b9ff">🧤 Membersihkan Sampah</strong><br>
-        Pilih tool Bersihkan, klik sampah untuk mengumpulkannya. Jaga sungai dan taman tetap bersih!<br><br>
-        <strong style="color:#6c5ce7">⬆️ Upgrade</strong><br>
-        Gunakan energi untuk membeli upgrade yang memudahkan misimu.<br><br>
-        <strong style="color:#fd79a8">🌤 Sistem Cuaca</strong><br>
-        Cuaca berubah dinamis. Hujan membantu memadamkan api, angin mempercepatnya!<br><br>
-        <strong style="color:#2ecc71">🎯 Target & Bintang</strong><br>
-        Capai semua target → ⭐⭐⭐ | Sebagian → ⭐⭐ | Gagal → ⭐
-      </div>
-      <div style="text-align:center;margin-top:24px">
-        <button class="btn btn-primary" onclick="this.closest('.popup-overlay').remove()">MENGERTI!</button>
-      </div>
-    </div>`;
-  document.body.appendChild(popup);
+// =============================================
+// GAME DATA
+// =============================================
+const LEVELS = [
+  { id:1,  name:'Taman Kota',      icon:'🏙️', time:300, targets:{ trees:15, trash:15, fires:3, animals:3 } },
+  { id:2,  name:'Sungai Tercemar', icon:'🏞️', time:300, targets:{ trees:10, trash:25, fires:2, animals:4 } },
+  { id:3,  name:'Kebakaran Kecil', icon:'🔥', time:280, targets:{ trees:20, trash:10, fires:6, animals:5 } },
+  { id:4,  name:'Selamatkan Satwa',icon:'🦌', time:270, targets:{ trees:15, trash:10, fires:4, animals:8 } },
+  { id:5,  name:'Penebangan Liar', icon:'🪵', time:300, targets:{ trees:30, trash:20, fires:5, animals:6 } },
+  { id:6,  name:'Kekeringan',      icon:'🌵', time:280, targets:{ trees:25, trash:15, fires:4, animals:5 } },
+  { id:7,  name:'Kebakaran Besar', icon:'🌋', time:260, targets:{ trees:20, trash:15, fires:10,animals:7 } },
+  { id:8,  name:'Hutan Tropis',    icon:'🌴', time:350, targets:{ trees:40, trash:20, fires:6, animals:10} },
+  { id:9,  name:'Taman Nasional',  icon:'⛰️', time:350, targets:{ trees:35, trash:25, fires:8, animals:12} },
+  { id:10, name:'Misi Terakhir',   icon:'🌏', time:400, targets:{ trees:50, trash:30, fires:12,animals:15} },
+];
+
+const WEATHER = [
+  { id:'sunny',  icon:'☀️', name:'CERAH',  fireSpread:1.0, treeGrow:1.3 },
+  { id:'rain',   icon:'🌧️', name:'HUJAN',  fireSpread:0.25,treeGrow:1.0 },
+  { id:'wind',   icon:'🌪️', name:'ANGIN',  fireSpread:2.5, treeGrow:0.8 },
+  { id:'winter', icon:'❄️', name:'DINGIN', fireSpread:0.5, treeGrow:0.4 },
+];
+
+const UPGRADES = [
+  { id:'fastGrow',  icon:'🌱', name:'Bibit Cepat',   cost:80  },
+  { id:'autoDrone', icon:'🚁', name:'Drone Penyiram', cost:120 },
+  { id:'bigTruck',  icon:'🚒', name:'Mobil Besar',    cost:150 },
+  { id:'fastClean', icon:'🧤', name:'Alat Cepat',     cost:100 },
+  { id:'sensor',    icon:'🛰️', name:'Sensor Api',     cost:180 },
+];
+
+// Save
+let save = { unlocked:[1], stars:{}, scores:{} };
+try { const s=localStorage.getItem('ecoGuardian2'); if(s) save=JSON.parse(s); } catch(e){}
+function saveGame() { try{localStorage.setItem('ecoGuardian2',JSON.stringify(save));}catch(e){} }
+
+// =============================================
+// TILE MAP SYSTEM
+// =============================================
+const TILE = 64;
+const TILE_GRASS   = 0;
+const TILE_DIRT    = 1;
+const TILE_WATER   = 2;
+const TILE_FERTILE = 3;
+const TILE_PATH    = 4;
+
+// Tile colors (used as base layer + image overlay)
+const TILE_COLORS = {
+  0: '#4a8c3f',  // grass green
+  1: '#8c6a3f',  // dirt brown
+  2: '#2980b9',  // water blue
+  3: '#5a6e2a',  // fertile dark green
+  4: '#9e8060',  // path tan
+};
+
+// Pre-drawn tile patterns using canvas
+const tileCache = {};
+function getTileCanvas(type, w=TILE, h=TILE) {
+  const key = `${type}_${w}_${h}`;
+  if(tileCache[key]) return tileCache[key];
+  const c = document.createElement('canvas'); c.width=w; c.height=h;
+  const x = c.getContext('2d');
+
+  const PIXEL = 4; // 16x16 pixel art grid inside 64x64
+  const cols = w / PIXEL;
+  const rows = h / PIXEL;
+
+  x.imageSmoothingEnabled = false;
+
+  let seed = type * 1337;
+  const rand = () => {
+    let v = Math.sin(seed++) * 10000;
+    return v - Math.floor(v);
+  };
+
+  const pals = {
+    [TILE_GRASS]:   ['#385424', '#476e2a', '#548231', '#669c3a'],
+    [TILE_DIRT]:    ['#4a3322', '#593e29', '#6b4c34', '#825f44'],
+    [TILE_WATER]:   ['#1c6094', '#2473ab', '#2c85bf', '#49a1e0'],
+    [TILE_FERTILE]: ['#274519', '#32591f', '#3f7326', '#c94d6e'], // red dots for flowers
+    [TILE_PATH]:    ['#545454', '#666666', '#7a7a7a', '#8a8a8a']
+  };
+  const pal = pals[type] || pals[TILE_GRASS];
+
+  // 1. Generate base noise grid
+  let grid = [];
+  for (let r=0; r<rows; r++) {
+    grid[r] = [];
+    for (let c=0; c<cols; c++) {
+      grid[r][c] = rand();
+    }
+  }
+
+  // 2. Blur noise for organic clumps (wrap-around for perfect seamlessness)
+  let clump = [];
+  for (let r=0; r<rows; r++) {
+    clump[r] = [];
+    for (let c=0; c<cols; c++) {
+      let sum = 0;
+      for (let dy=-1; dy<=1; dy++) {
+        for (let dx=-1; dx<=1; dx++) {
+          let rr = (r + dy + rows) % rows;
+          let cc = (c + dx + cols) % cols;
+          sum += grid[rr][cc];
+        }
+      }
+      clump[r][c] = sum / 9;
+    }
+  }
+
+  // 3. Render pixel art
+  for (let r = 0; r < rows; r++) {
+    for (let col = 0; col < cols; col++) {
+      let val = clump[r][col];
+      let hf = grid[r][col]; // high frequency noise
+      let color = pal[1]; // base
+      
+      if (type === TILE_WATER) {
+        // Horizontal streaks
+        if (val < 0.4 || (r % 4 === 0 && hf < 0.5)) color = pal[0];
+        else if (val > 0.6) color = pal[2];
+        if (hf > 0.95) color = pal[3]; // sparkling foam
+      } else if (type === TILE_PATH) {
+        // Stone paving (4x4 blocks)
+        const sr = Math.floor(r / 4);
+        const sc = Math.floor(col / 4);
+        const edge = (r % 4 === 0 || col % 4 === 0);
+        if (edge) {
+          color = pal[0]; // mortar/gap
+        } else {
+          let sVal = Math.sin(sr * 100 + sc) * 10000;
+          sVal = sVal - Math.floor(sVal);
+          if (sVal < 0.3) color = pal[1];
+          else if (sVal > 0.7) color = pal[3];
+          else color = pal[2];
+        }
+      } else {
+        // Organic terrain
+        if (val < 0.4) color = pal[0];
+        else if (val > 0.6) color = pal[2];
+        
+        // Tiny highlights/decorations
+        if (hf > 0.92) {
+          color = pal[3]; // pebbles/flowers/grass tips
+        }
+      }
+      
+      x.fillStyle = color;
+      x.fillRect(col * PIXEL, r * PIXEL, PIXEL, PIXEL);
+    }
+  }
+
+  // 4. Macro features (drawn seamlessly across boundaries)
+  const drawFeature = (fr, fc, cArr) => {
+    for (let dy=0; dy<cArr.length; dy++) {
+      for (let dx=0; dx<cArr[dy].length; dx++) {
+        if (cArr[dy][dx]) {
+          let rr = (fr + dy + rows) % rows;
+          let cc = (fc + dx + cols) % cols;
+          x.fillStyle = cArr[dy][dx];
+          x.fillRect(cc * PIXEL, rr * PIXEL, PIXEL, PIXEL);
+        }
+      }
+    }
+  };
+
+  if (type === TILE_WATER) {
+    // Lilypad
+    drawFeature(2, 2, [
+      [0, '#3a782b', '#3a782b', 0],
+      ['#3a782b', '#3a782b', '#3a782b', '#3a782b'],
+      ['#3a782b', 0, '#3a782b', '#3a782b'],
+      [0, '#3a782b', '#3a782b', 0]
+    ]);
+  } else if (type === TILE_GRASS) {
+    // Bush
+    drawFeature(10, 8, [
+      [0, '#2a4a16', '#2a4a16', 0],
+      ['#2a4a16', '#4a7a22', '#4a7a22', '#2a4a16'],
+      ['#2a4a16', '#2a4a16', '#2a4a16', '#2a4a16']
+    ]);
+  } else if (type === TILE_DIRT) {
+    // Rock
+    drawFeature(12, 4, [
+      ['#4a3a30', '#4a3a30'],
+      ['#6a5a50', '#4a3a30']
+    ]);
+  }
+  tileCache[key] = c; return c;
 }
 
-// ===========================
-// GAME OBJECTS
-// ===========================
-function nextId() { return gs.nextObjId++; }
+// =============================================
+// SPRITE DRAWING (using loaded assets)
+// =============================================
 
-function createFire(x, y, intensity=1) {
-  return { id:nextId(), type:'fire', x, y, intensity, spreadTimer:0, size:24+intensity*6, alpha:1 };
+// Draw tree from sprite sheet (3 growth stages)
+// trees.png: 3 trees arranged left-to-right
+/**
+ * drawTreeSprite – Uses the new trees2.png sprite sheet when available.
+ * trees2.png has 6 tree types (oak, pine, rainforest, sakura, dead, mangrove)
+ * arranged in a single row on black background.
+ * Falls back to rich procedural drawing if sprite not loaded.
+ *
+ * treeType (0–5) controls which column of trees2 is used.
+ * stage (0–2) controls scale (sapling / young / mature).
+ */
+function drawTreeSprite(ctx, stage, x, y, size, treeType = 0) {
+  const src = ASSETS_CLEAN.trees2;
+  if (src && src.width > 0) {
+    const frames = autoSliceSprites(src);
+    if (frames.length > 0) {
+      // Pick the corresponding tree variant
+      const fr = frames[Math.min(treeType, frames.length - 1)];
+      // Scale by stage: 0=small, 1=medium, 2=full
+      const scale = [0.42, 0.66, 1.0][Math.min(stage, 2)];
+      const dw = size * scale;
+      // Aspect-ratio correct height using EXACT bounding box
+      const dh = dw * (fr.h / fr.w);
+
+      // Anchor bottom-center of the exact tree sprite to y
+      ctx.drawImage(src, fr.x, fr.y, fr.w, fr.h, x - dw / 2, y - dh, dw, dh);
+      return;
+    }
+  }
+
+  // --- Procedural fallback (rich layered canopy) ---
+  const scales = [0.38, 0.62, 1.0];
+  const s = size * scales[Math.min(stage, 2)];
+
+  // Shadow
+  ctx.save();
+  ctx.globalAlpha = 0.22;
+  ctx.fillStyle = '#000';
+  ctx.beginPath();
+  ctx.ellipse(x + s*0.12, y + s*0.04, s*0.42, s*0.16, 0, 0, Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+
+  // Trunk
+  const trunkW = s * 0.18, trunkH = s * 0.30;
+  const grad = ctx.createLinearGradient(x - trunkW, y - trunkH, x + trunkW, y);
+  grad.addColorStop(0, '#6b3a1f'); grad.addColorStop(1, '#3d1e08');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(x - trunkW/2, y - trunkH, trunkW, trunkH + 4, 3);
+  ctx.fill();
+
+  // Canopy by tree type (treeType 0–5)
+  const palettes = [
+    { base:'#3d8c28', dark:'#2a6618', light:'#5dbf3e' }, // oak
+    { base:'#1a5e1a', dark:'#0f3d0f', light:'#2d8c2d' }, // pine
+    { base:'#2d7a3a', dark:'#1a5228', light:'#4aab5a' }, // rainforest
+    { base:'#e89fc2', dark:'#c2608a', light:'#f5c0d8' }, // sakura
+    { base:'#6b5a3a', dark:'#3d2e14', light:'#8c7a50' }, // dead
+    { base:'#2e6b3e', dark:'#1a4228', light:'#4a9e5a' }, // mangrove
+  ];
+  const pal = palettes[Math.min(treeType, palettes.length - 1)];
+  const r0 = s * 0.40;
+  const cy = y - trunkH * 0.6;
+
+  ctx.fillStyle = pal.dark;  ctx.beginPath(); ctx.arc(x, cy, r0, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = pal.base;  ctx.beginPath(); ctx.arc(x, cy - r0*0.05, r0*0.93, 0, Math.PI*2); ctx.fill();
+  const blob = (bx, by, br, col) => { ctx.fillStyle=col; ctx.beginPath(); ctx.arc(bx,by,br,0,Math.PI*2); ctx.fill(); };
+  blob(x - r0*0.28, cy - r0*0.18, r0*0.62, pal.light);
+  blob(x + r0*0.22, cy - r0*0.22, r0*0.55, pal.light);
+  blob(x, cy + r0*0.12, r0*0.52, pal.base);
+  blob(x - r0*0.14, cy - r0*0.32, r0*0.30, 'rgba(255,255,255,0.15)');
+  if (stage >= 1) for (let i=0;i<6;i++) {
+    const a=(i/6)*Math.PI*2+0.4;
+    blob(x+Math.cos(a)*r0*0.52, cy+Math.sin(a)*r0*0.42, r0*0.14, pal.dark);
+  }
+  ctx.strokeStyle='rgba(0,0,0,0.25)'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.arc(x, cy, r0+1, 0, Math.PI*2); ctx.stroke();
 }
-function createTree(x, y, stage=0, auto=false) {
-  return { id:nextId(), type:'tree', x, y, stage, growTimer:0, alive:true, auto };
-}
-function createAnimal(x, y) {
-  const safeX = 60 + Math.random() * 80;
-  const safeY = canvas.height * 0.25 + Math.random() * 40;
-  return { id:nextId(), type:'animal', x, y, icon:ANIMAL_TYPES[Math.floor(Math.random()*ANIMAL_TYPES.length)], panic:true, tx:x, ty:y, safeX, safeY, rescued:false };
-}
-function createTrash(x, y) {
-  return { id:nextId(), type:'trash', x, y, icon:TRASH_TYPES[Math.floor(Math.random()*TRASH_TYPES.length)] };
-}
-function createParticle(x, y, text, color, dy=-2) {
-  particles.push({ x, y, text, color, dy, life:1.5, alpha:1 });
+function drawTreeFallback(ctx, stage, x, y, size) { drawTreeSprite(ctx, stage, x, y, size, 0); }
+
+// Draw deer from sprite sheet
+// deer.png: 2 frames side by side (idle | run)
+function drawDeerSprite(ctx, x, y, size, frame=0, flipX=false) {
+  const src = ASSETS_CLEAN.deer || ASSETS.deer;
+  if(!src) { drawDeerFallback(ctx, x, y, size); return; }
+  const sw = src.width / 2;
+  const sh = src.height;
+  const sx = frame * sw;
+  const ds = size;
+  const dh = ds * sh / sw; // preserve aspect ratio
+  ctx.save();
+  if(flipX) {
+    ctx.translate(x, y);
+    ctx.scale(-1, 1);
+    ctx.drawImage(src, sx, 0, sw, sh, -ds/2, -dh*0.85, ds, dh);
+  } else {
+    ctx.drawImage(src, sx, 0, sw, sh, x - ds/2, y - dh*0.85, ds, dh);
+  }
+  ctx.restore();
 }
 
-// ===========================
-// LEVEL INIT
-// ===========================
+function drawDeerFallback(ctx, x, y, size) {
+  // Simple pixel deer
+  const s = size/40;
+  ctx.fillStyle='#a0724a';
+  ctx.fillRect(x-10*s,y-14*s,20*s,10*s); // body
+  ctx.fillRect(x-4*s,y-20*s,8*s,8*s);    // head
+  // Antlers
+  ctx.fillStyle='#5c3a1e';
+  ctx.fillRect(x-7*s,y-26*s,2*s,6*s);
+  ctx.fillRect(x+5*s,y-26*s,2*s,6*s);
+  // Legs
+  ctx.fillStyle='#8c5a30';
+  ctx.fillRect(x-8*s,y-4*s,3*s,8*s);
+  ctx.fillRect(x+5*s,y-4*s,3*s,8*s);
+}
+
+// Draw fire – uses fire2.png (black-bg clean sprite) with dark-key removal.
+// Falls back to fully procedural fire if sprite not ready.
+let fireFrame = 0;
+let fireFrameTimer = 0;
+function drawFireSprite(ctx, x, y, size, frame=0) {
+  // 1. Radial glow (always, independent of sprite)
+  const grd = ctx.createRadialGradient(x, y - size*0.25, 2, x, y + size*0.1, size*1.1);
+  grd.addColorStop(0,    'rgba(255,230,80,0.65)');
+  grd.addColorStop(0.35, 'rgba(255,110,0,0.50)');
+  grd.addColorStop(0.7,  'rgba(200,30,0,0.25)');
+  grd.addColorStop(1,    'rgba(150,0,0,0)');
+  ctx.fillStyle = grd;
+  ctx.beginPath(); ctx.arc(x, y, size*1.1, 0, Math.PI*2); ctx.fill();
+
+  // 2. Try fire2 sprite (4 frames on black background)
+  const src2 = ASSETS_CLEAN.fire2;
+  if (src2 && src2.width > 0) {
+    const frames = autoSliceSprites(src2);
+    if (frames.length > 0) {
+      const fr = frames[frame % frames.length];
+      const dw = size * 1.0;
+      const dh = dw * (fr.h / fr.w);
+      // Place the exact bottom of the fire sprite at y (which aligns perfectly with the glow)
+      ctx.drawImage(src2, fr.x, fr.y, fr.w, fr.h, x - dw/2, y - dh, dw, dh);
+      return;
+    }
+  }
+
+  // 3. Try old fire sprite with ellipse clip
+  const src = ASSETS_CLEAN.fire || ASSETS.fire;
+  if (src) {
+    const sw = src.width / 3, sh = src.height, sx = frame * sw;
+    const dw = size * 0.9, dh = dw * sh / sw;
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(x, y - dh*0.32, dw*0.44, dh*0.50, 0, 0, Math.PI*2);
+    ctx.clip();
+    ctx.drawImage(src, sx, 0, sw, sh, x - dw/2, y - dh*0.88, dw, dh);
+    ctx.restore();
+    return;
+  }
+
+  // 4. Full procedural fallback
+  drawFireFallback(ctx, x, y, size);
+}
+
+function drawFireFallback(ctx, x, y, size) {
+  const grd=ctx.createRadialGradient(x,y-size*0.3,2,x,y,size*0.7);
+  grd.addColorStop(0,'#fff600'); grd.addColorStop(0.4,'#ff8c00'); grd.addColorStop(1,'rgba(200,0,0,0)');
+  ctx.fillStyle=grd; ctx.beginPath(); ctx.arc(x,y,size*0.7,0,Math.PI*2); ctx.fill();
+}
+
+// Draw trash from sprite sheet (3 types across trash.png)
+function drawTrashSprite(ctx, x, y, size, type=0) {
+  const src = ASSETS_CLEAN.trash || ASSETS.trash;
+  if(!src) {
+    ctx.font=`${size}px serif`; ctx.textAlign='center';
+    ctx.fillText(['🛢️','⚙️','🗑️'][type%3], x, y); return;
+  }
+  const sw = src.width / 3;
+  const sh = src.height;
+  const sx = (type%3) * sw;
+  const ds = size;
+  const dh = ds * sh / sw; // keep aspect ratio
+  ctx.drawImage(src, sx, 0, sw, sh, x - ds/2, y - dh*0.8, ds, dh);
+}
+
+// =============================================
+// MAP GENERATION
+// =============================================
+function generateMap(W, H) {
+  const cols = Math.ceil(W/TILE)+1;
+  const rows = Math.ceil(H/TILE)+1;
+  const map = [];
+  // Simple noise-based map
+  for(let r=0;r<rows;r++) {
+    map[r] = [];
+    for(let c=0;c<cols;c++) {
+      // Sky area (top 3 rows = water/path visual)
+      if(r < 2) { map[r][c] = TILE_WATER; continue; }
+      // River horizontal strip
+      if(r === 3) { map[r][c] = TILE_WATER; continue; }
+      // Path (vertical strip)
+      if(c === Math.floor(cols/2)) { map[r][c] = TILE_PATH; continue; }
+      // Noise-based terrain
+      const n = Math.sin(r*0.7+c*0.3)*Math.cos(r*0.4+c*0.5);
+      if(n > 0.4) map[r][c] = TILE_DIRT;
+      else if(n > 0.1) map[r][c] = TILE_FERTILE;
+      else map[r][c] = TILE_GRASS;
+    }
+  }
+  return { map, cols, rows };
+}
+
+function renderMap(ctx, mapData, scrollX, scrollY) {
+  const { map, cols, rows } = mapData;
+  for(let r=0;r<rows;r++) {
+    for(let c=0;c<cols;c++) {
+      const type = map[r][c];
+      const px = c*TILE - scrollX;
+      const py = r*TILE - scrollY;
+      // Draw tile canvas
+      ctx.drawImage(getTileCanvas(type), px, py, TILE, TILE);
+    }
+  }
+}
+
+// =============================================
+// GAME STATE
+// =============================================
+let gs = { running:false };
+let particles = [];
+let mapData = null;
+let scrollX = 0, scrollY = 0;
+let curX = 0, curY = 0;
+let fireAnimTimer = 0;
+let deerAnimTimer = 0;
+let deerFrame = 0;
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+function nextId() { return gs.nextObjId = (gs.nextObjId||0)+1; }
+
+// =============================================
+// LEVEL START
+// =============================================
 function startLevel(id) {
-  const lv = LEVELS[id - 1];
+  const lv = LEVELS[id-1];
   gs = {
-    running: true, paused: false, currentLevel: id,
-    score: 0, energy: 100, time: lv.time,
-    tool: 'plant', level: lv,
-    weather: WEATHER_TYPES[0], weatherTimer: 60 + Math.random()*60,
-    objects: [],
-    done: { trees:0, trash:0, fires:0, animals:0 },
-    upgrades: {},
-    lastTime: performance.now(),
-    nextObjId: 0,
-    autodroneTimer: 0,
+    running:true, paused:false, currentLevel:id, level:lv,
+    score:0, energy:100, time:lv.time,
+    tool:'plant',
+    weather:WEATHER[0], weatherTimer:60+Math.random()*60,
+    objects:[],
+    done:{ trees:0, trash:0, fires:0, animals:0 },
+    upgrades:{},
+    lastTime:performance.now(),
+    nextObjId:0,
+    autodroneTimer:0,
   };
   particles = [];
   hideAllPopups();
   resizeCanvas();
+  mapData = generateMap(canvas.width, canvas.height);
   showScreen('game');
-  spawnInitialObjects(lv);
+  spawnObjects(lv);
   updateHUD();
   buildMissionPanel(lv);
   buildUpgradePanel();
@@ -581,639 +1129,679 @@ function startLevel(id) {
   requestAnimationFrame(gameLoop);
 }
 
-function spawnInitialObjects(lv) {
+// =============================================
+// LIMITS & PLACEMENT HELPERS
+// =============================================
+const MAX_FIRES  = 8;   // absolute max fire objects on screen
+const MAX_TRASH  = 8;   // absolute max trash on screen
+const MAX_ANIMALS= 6;   // absolute max animals on screen
+const MIN_DIST   = 80;  // minimum distance between same-type objects
+
+/**
+ * Pick a random point that is at least minDist away from all existing
+ * objects of the same type.  Returns null after maxTries if no spot found.
+ */
+function randomPointFarFrom(type, xMin, xMax, yMin, yMax, minDist=MIN_DIST, maxTries=40) {
+  for(let t=0;t<maxTries;t++) {
+    const x = xMin + Math.random()*(xMax-xMin);
+    const y = yMin + Math.random()*(yMax-yMin);
+    const tooClose = gs.objects.some(o=>o.type===type && dist(o.x,o.y,x,y)<minDist);
+    if(!tooClose) return {x,y};
+  }
+  return null; // couldn't find a free spot
+}
+
+function spawnObjects(lv) {
   const W = canvas.width, H = canvas.height;
-  const ground = { x: 0, y: H*0.3, w: W, h: H*0.7 };
+  const gY = TILE * 4; // below river / sky
+  const bX=80, bW=W-160, bH=H-gY-120;
 
-  // Fires
-  const numFires = Math.ceil(lv.targets.fires * 0.7);
-  for(let i=0; i<numFires; i++) {
-    gs.objects.push(createFire(
-      ground.x + 80 + Math.random()*(W-160),
-      ground.y + 30 + Math.random()*(H*0.45)
-    ));
+  // --- Fires (cap at MAX_FIRES, spread out) ---
+  const fireCount = Math.min(Math.ceil(lv.targets.fires*0.6), MAX_FIRES);
+  for(let i=0;i<fireCount;i++) {
+    const pt = randomPointFarFrom('fire', bX, bX+bW, gY+30, gY+bH, 120);
+    if(!pt) continue;
+    gs.objects.push({ id:nextId(), type:'fire', frame:0,
+      x:pt.x, y:pt.y, intensity:1+Math.random()*0.5, spreadTimer:0, size:44 });
   }
-  // Animals
-  const numAnimals = Math.ceil(lv.targets.animals * 0.8);
-  for(let i=0; i<numAnimals; i++) {
-    gs.objects.push(createAnimal(
-      W*0.3 + Math.random()*(W*0.6),
-      ground.y + 40 + Math.random()*(H*0.4)
-    ));
+
+  // --- Animals (cap at MAX_ANIMALS, spread out) ---
+  const animalCount = Math.min(Math.ceil(lv.targets.animals*0.7), MAX_ANIMALS);
+  for(let i=0;i<animalCount;i++) {
+    const pt = randomPointFarFrom('animal', W*0.2, W*0.9, gY+50, gY+bH, 90);
+    if(!pt) continue;
+    gs.objects.push({ id:nextId(), type:'animal',
+      x:pt.x, y:pt.y, frame:0, flipX:Math.random()<0.5, panicTimer:0,
+      vx:(Math.random()-0.5)*0.8, vy:(Math.random()-0.5)*0.8,
+      safeX:80+Math.random()*110, safeY:gY+40+Math.random()*50,
+      rescued:false, size:38 });
   }
-  // Trash
-  const numTrash = Math.ceil(lv.targets.trash * 0.7);
-  for(let i=0; i<numTrash; i++) {
-    gs.objects.push(createTrash(
-      80 + Math.random()*(W-160),
-      ground.y + 20 + Math.random()*(H*0.5)
-    ));
+
+  // --- Trash (cap at MAX_TRASH, spread out) ---
+  const trashCount = Math.min(Math.ceil(lv.targets.trash*0.6), MAX_TRASH);
+  for(let i=0;i<trashCount;i++) {
+    const pt = randomPointFarFrom('trash', bX, bX+bW, gY+20, gY+bH, 80);
+    if(!pt) continue;
+    gs.objects.push({ id:nextId(), type:'trash',
+      x:pt.x, y:pt.y, trashType:Math.floor(Math.random()*3), size:36 });
   }
-  // Trees (young already planted, some burnt)
-  for(let i=0; i<8; i++) {
-    const t = createTree(80+Math.random()*(W-160), ground.y+30+Math.random()*(H*0.4));
-    t.stage = Math.random() < 0.5 ? 0 : 1;
-    if(Math.random()<0.3) { t.stage=0; t.alive=false; } // burnt
-    gs.objects.push(t);
+
+  // --- Pre-planted / burnt trees (few, spread out) ---
+  for(let i=0;i<5;i++) {
+    const pt = randomPointFarFrom('tree', bX, bX+bW, gY+20, gY+bH, 80);
+    if(!pt) continue;
+    gs.objects.push({ id:nextId(), type:'tree',
+      x:pt.x, y:pt.y, stage:Math.random()<0.5?0:1,
+      growTimer:Math.random()*4, alive:Math.random()>0.3, size:56,
+      treeType: Math.floor(Math.random() * 6) });
   }
 }
 
-// ===========================
-// CANVAS & RESIZE
-// ===========================
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', () => { if(gs.running) resizeCanvas(); });
-
-// ===========================
+// =============================================
 // GAME LOOP
-// ===========================
+// =============================================
 function gameLoop(now) {
   if(!gs.running) return;
-  const dt = Math.min((now - gs.lastTime) / 1000, 0.1);
+  const dt = Math.min((now - gs.lastTime)/1000, 0.1);
   gs.lastTime = now;
-
-  if(!gs.paused) {
-    update(dt);
-    render();
-  }
+  if(!gs.paused) { update(dt); render(); }
   requestAnimationFrame(gameLoop);
 }
 
-// ===========================
+// =============================================
 // UPDATE
-// ===========================
+// =============================================
 function update(dt) {
   gs.time -= dt;
-  if(gs.time <= 0) { gs.time = 0; endLevel(); return; }
+  if(gs.time <= 0) { gs.time=0; endLevel(); return; }
 
-  // Weather
+  // Weather change
   gs.weatherTimer -= dt;
   if(gs.weatherTimer <= 0) {
-    gs.weather = WEATHER_TYPES[Math.floor(Math.random()*WEATHER_TYPES.length)];
-    gs.weatherTimer = 45 + Math.random()*60;
-    showNotif(`Cuaca berubah: ${gs.weather.icon} ${gs.weather.name}`, 'info');
+    gs.weather = WEATHER[Math.floor(Math.random()*WEATHER.length)];
+    gs.weatherTimer = 45+Math.random()*60;
+    showNotif(`Cuaca: ${gs.weather.icon} ${gs.weather.name}`, 'info');
     updateWeatherHUD();
   }
 
-  // Fire update
-  gs.objects.filter(o=>o.type==='fire').forEach(f => {
+  // Animate fire frames
+  fireAnimTimer += dt;
+  if(fireAnimTimer > 0.12) { fireAnimTimer=0; gs.objects.filter(o=>o.type==='fire').forEach(f=>f.frame=(f.frame+1)%3); }
+
+  // Animate deer
+  deerAnimTimer += dt;
+  if(deerAnimTimer > 0.35) { deerAnimTimer=0; deerFrame=(deerFrame+1)%2; }
+
+  // Fire spread – capped at MAX_FIRES, must not be too close to existing fire
+  const activeFires = gs.objects.filter(o=>o.type==='fire');
+  activeFires.forEach(f=>{
     f.spreadTimer += dt * gs.weather.fireSpread;
-    if(f.spreadTimer > 8) {
+    if(f.spreadTimer > 12) {
       f.spreadTimer = 0;
-      if(Math.random() < 0.45) {
-        const nx = f.x + (Math.random()-0.5)*80;
-        const ny = f.y + (Math.random()-0.5)*60;
-        if(nx>40 && nx<canvas.width-40 && ny>canvas.height*0.3 && ny<canvas.height-80) {
-          gs.objects.push(createFire(nx, ny, Math.min(f.intensity, 2)));
-          // Possibly burn adjacent tree
+      // Only spread if under cap AND coin flip
+      if(activeFires.length < MAX_FIRES && Math.random() < 0.28) {
+        const gY2=TILE*4;
+        const nx=f.x+(Math.random()-0.5)*100, ny=f.y+(Math.random()-0.5)*80;
+        // Must be on ground, within bounds, and not overlapping another fire
+        const onGround = ny>gY2 && ny<canvas.height-80;
+        const inBounds = nx>60 && nx<canvas.width-60;
+        const notOverlap = !gs.objects.some(o=>o.type==='fire'&&dist(o.x,o.y,nx,ny)<90);
+        if(onGround && inBounds && notOverlap) {
+          gs.objects.push({id:nextId(),type:'fire',frame:0,x:nx,y:ny,intensity:1,spreadTimer:0,size:40});
+          // Burn nearby tree
           gs.objects.filter(o=>o.type==='tree'&&o.alive).forEach(t=>{
-            if(dist(t.x,t.y,nx,ny)<40){t.alive=false;gs.score-=30;gs.score=Math.max(0,gs.score);showNotif('-30 Pohon terbakar!','neg');}
+            if(dist(t.x,t.y,nx,ny)<55){t.alive=false;gs.score=Math.max(0,gs.score-30);showNotif('-30 Pohon terbakar!','neg');}
           });
         }
       }
     }
-    // Rain slowly extinguishes small fires
-    if(gs.weather.id==='rain') {
-      f.intensity -= dt*0.05;
-      if(f.intensity <= 0) removeObj(f.id);
-    }
+    if(gs.weather.id==='rain') { f.intensity-=dt*0.07; if(f.intensity<=0) removeObj(f.id); }
   });
 
-  // Tree grow
-  gs.objects.filter(o=>o.type==='tree'&&o.alive&&o.stage<2).forEach(t => {
-    t.growTimer += dt * gs.weather.treeGrow * (gs.upgrades.fastGrow ? 2 : 1);
-    if(t.growTimer > 6) { t.growTimer=0; t.stage++; }
+  // Tree growth
+  gs.objects.filter(o=>o.type==='tree'&&o.alive&&o.stage<2).forEach(t=>{
+    t.growTimer += dt * gs.weather.treeGrow * (gs.upgrades.fastGrow?2.2:1);
+    if(t.growTimer>6) { t.growTimer=0; t.stage++; }
   });
 
-  // Animals wander
+  // Animal wander
   gs.objects.filter(o=>o.type==='animal'&&!o.rescued).forEach(a=>{
-    if(a.panic) {
-      a.x += (Math.random()-0.5)*1.5;
-      a.y += (Math.random()-0.5)*1.5;
-      a.x = Math.max(40, Math.min(canvas.width-40, a.x));
-      a.y = Math.max(canvas.height*0.3+20, Math.min(canvas.height-80, a.y));
-    }
+    a.panicTimer += dt;
+    a.x += a.vx; a.y += a.vy;
+    if(a.panicTimer>1) { a.panicTimer=0; a.vx=(Math.random()-0.5)*1.2; a.vy=(Math.random()-0.5)*0.9; a.flipX=a.vx<0; }
+    const gY=TILE*4;
+    a.x=Math.max(40,Math.min(canvas.width-40,a.x));
+    a.y=Math.max(gY+20,Math.min(canvas.height-80,a.y));
   });
 
   // Auto drone
   if(gs.upgrades.autoDrone) {
-    gs.autodroneTimer = (gs.autodroneTimer||0) + dt;
-    if(gs.autodroneTimer > 5) {
-      gs.autodroneTimer = 0;
-      const smallFires = gs.objects.filter(o=>o.type==='fire'&&o.intensity<=1);
-      if(smallFires.length>0) {
-        const f = smallFires[0];
-        removeObj(f.id);
-        gs.score += 50; gs.done.fires++;
-        createParticle(f.x,f.y,'🚁 Auto!','#74b9ff');
-        updateMissionPanel();
-      }
+    gs.autodroneTimer+=dt;
+    if(gs.autodroneTimer>5) {
+      gs.autodroneTimer=0;
+      const sf=gs.objects.filter(o=>o.type==='fire'&&o.intensity<=1);
+      if(sf.length>0){const f=sf[0];removeObj(f.id);gs.score+=50;gs.done.fires++;createParticle(f.x,f.y,'🚁 Auto!','#74b9ff');updateMissionPanel();}
     }
   }
 
-  // Spawn bonus trash/animal occasionally
-  if(Math.random() < dt * 0.05) {
-    if(gs.objects.filter(o=>o.type==='trash').length < 8) {
-      gs.objects.push(createTrash(80+Math.random()*(canvas.width-160), canvas.height*0.35+Math.random()*(canvas.height*0.4)));
-    }
+  // Spawn extra trash occasionally – hard cap at MAX_TRASH, with min-distance check
+  const trashOnScreen = gs.objects.filter(o=>o.type==='trash').length;
+  if(Math.random() < dt*0.015 && trashOnScreen < MAX_TRASH) {
+    const gY3=TILE*4;
+    const pt = randomPointFarFrom('trash', 80, canvas.width-160, gY3+20, canvas.height-gY3-100, 90);
+    if(pt) gs.objects.push({id:nextId(),type:'trash',x:pt.x,y:pt.y,trashType:Math.floor(Math.random()*3),size:34});
   }
 
-  // Update particles
-  particles.forEach(p => { p.y += p.dy*dt*60; p.alpha -= dt*0.7; });
-  particles = particles.filter(p=>p.alpha>0);
+  // Particles
+  particles.forEach(p=>{p.y+=p.dy*dt*60; p.alpha-=dt*0.65;});
+  particles=particles.filter(p=>p.alpha>0);
+
+  // Energy regen
+  gs.energy=Math.min(100,gs.energy+0.01);
 
   updateHUD();
   checkWin();
 }
 
-// ===========================
+// =============================================
 // RENDER
-// ===========================
+// =============================================
 function render() {
-  const W = canvas.width, H = canvas.height;
+  const W=canvas.width, H=canvas.height;
   ctx.clearRect(0,0,W,H);
 
-  // Sky gradient
-  const skyGrad = ctx.createLinearGradient(0,0,0,H*0.35);
-  const weath = gs.weather;
-  if(weath.id==='rain') {
-    skyGrad.addColorStop(0,'#1e2d3d'); skyGrad.addColorStop(1,'#2c3e50');
-  } else if(weath.id==='wind') {
-    skyGrad.addColorStop(0,'#2d1b69'); skyGrad.addColorStop(1,'#6c3483');
-  } else if(weath.id==='winter') {
-    skyGrad.addColorStop(0,'#2c3e50'); skyGrad.addColorStop(1,'#85929e');
-  } else {
-    skyGrad.addColorStop(0,'#0a1628'); skyGrad.addColorStop(1,'#1a3a5c');
+  // Sky
+  const skyG=ctx.createLinearGradient(0,0,0,TILE*4);
+  if(gs.weather.id==='rain')       {skyG.addColorStop(0,'#1e2d3d');skyG.addColorStop(1,'#2c3e50');}
+  else if(gs.weather.id==='wind')  {skyG.addColorStop(0,'#2d1b69');skyG.addColorStop(1,'#4a2980');}
+  else if(gs.weather.id==='winter'){skyG.addColorStop(0,'#1a2535');skyG.addColorStop(1,'#2c3e50');}
+  else                             {skyG.addColorStop(0,'#1a3a6c');skyG.addColorStop(1,'#2980b9');}
+  ctx.fillStyle=skyG; ctx.fillRect(0,0,W,TILE*3.5);
+
+  // Tile map (ground)
+  renderMap(ctx, mapData, scrollX, scrollY);
+
+  // Safe zone overlay
+  const szH=TILE*2.5;
+  const szY=TILE*4;
+  ctx.fillStyle='rgba(46,204,113,0.18)';
+  ctx.fillRect(0,szY,150,szH);
+  ctx.strokeStyle='rgba(46,204,113,0.6)'; ctx.lineWidth=2; ctx.setLineDash([8,4]);
+  ctx.strokeRect(3,szY+3,144,szH-6); ctx.setLineDash([]);
+  ctx.font='bold 11px Inter'; ctx.fillStyle='rgba(46,204,113,0.85)'; ctx.textAlign='center';
+  ctx.fillText('🏕️ ZONA AMAN', 75, szY+18);
+
+  // Sun / Moon
+  if(gs.weather.id!=='rain') {
+    const sx=W-70, sy=45;
+    const sgr=ctx.createRadialGradient(sx,sy,4,sx,sy,36);
+    sgr.addColorStop(0,'rgba(249,202,36,0.9)'); sgr.addColorStop(1,'rgba(249,202,36,0)');
+    ctx.fillStyle=sgr; ctx.beginPath(); ctx.arc(sx,sy,36,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#f9ca24'; ctx.beginPath(); ctx.arc(sx,sy,16,0,Math.PI*2); ctx.fill();
   }
-  ctx.fillStyle = skyGrad; ctx.fillRect(0,0,W,H*0.35);
 
-  // Sun/moon/clouds
-  drawSkyElements(W, H);
+  // Weather effects
+  if(gs.weather.id==='rain') drawRain(W,H);
+  if(gs.weather.id==='wind') drawWind(W,H);
+  if(gs.weather.id==='winter') drawSnow(W,H);
 
-  // Ground
-  const groundGrad = ctx.createLinearGradient(0,H*0.3,0,H);
-  groundGrad.addColorStop(0,'#2d5016'); groundGrad.addColorStop(0.3,'#1e3a0a'); groundGrad.addColorStop(1,'#111b07');
-  ctx.fillStyle = groundGrad; ctx.fillRect(0,H*0.3,W,H*0.7);
+  // Sort objects by Y for depth
+  const sorted = [...gs.objects].sort((a,b)=>a.y-b.y);
 
-  // Safe zone
-  const szGrad = ctx.createLinearGradient(0,H*0.25,0,H*0.45);
-  szGrad.addColorStop(0,'rgba(46,204,113,0.25)'); szGrad.addColorStop(1,'rgba(46,204,113,0)');
-  ctx.fillStyle = szGrad; ctx.fillRect(0,H*0.25,160,H*0.35);
-  ctx.strokeStyle = 'rgba(46,204,113,0.5)'; ctx.lineWidth=2;
-  ctx.setLineDash([6,4]); ctx.strokeRect(4,H*0.26,152,H*0.22); ctx.setLineDash([]);
-  ctx.fillStyle='rgba(46,204,113,0.7)'; ctx.font='11px Inter'; ctx.textAlign='center';
-  ctx.fillText('🏕️ ZONA AMAN', 80, H*0.27+12);
-
-  // Horizon line
-  ctx.strokeStyle = 'rgba(46,204,113,0.15)'; ctx.lineWidth=1;
-  ctx.beginPath(); ctx.moveTo(0,H*0.3); ctx.lineTo(W,H*0.3); ctx.stroke();
-
-  // Rain effect
-  if(weath.id==='rain') drawRain(W,H);
-  if(weath.id==='wind') drawWind(W,H);
-
-  // Objects
-  gs.objects.forEach(o => {
-    if(o.type==='fire') drawFire(o);
-    else if(o.type==='tree') drawTree(o);
-    else if(o.type==='animal') drawAnimal(o);
-    else if(o.type==='trash') drawTrash(o);
+  sorted.forEach(o=>{
+    if(o.type==='fire'  && !o.removed) drawFire(o);
+    else if(o.type==='tree'  && !o.removed) drawTree(o);
+    else if(o.type==='animal'&& !o.removed) drawAnimal(o);
+    else if(o.type==='trash' && !o.removed) drawTrash(o);
   });
 
   // Particles
+  ctx.save();
   particles.forEach(p=>{
     ctx.globalAlpha=p.alpha;
-    ctx.font='bold 14px Inter'; ctx.textAlign='center';
+    ctx.font='bold 13px Inter'; ctx.textAlign='center';
     ctx.fillStyle=p.color||'#fff';
+    ctx.shadowColor=p.color; ctx.shadowBlur=8;
     ctx.fillText(p.text,p.x,p.y);
   });
-  ctx.globalAlpha=1;
+  ctx.globalAlpha=1; ctx.shadowBlur=0;
+  ctx.restore();
 
-  // Tool cursor hint
-  drawCursorHint(W,H);
-}
-
-function drawSkyElements(W,H) {
-  // Sun
-  if(gs.weather.id==='sunny'||gs.weather.id==='wind') {
-    const sunX=W-80,sunY=50;
-    const sg=ctx.createRadialGradient(sunX,sunY,5,sunX,sunY,40);
-    sg.addColorStop(0,'rgba(249,202,36,0.9)'); sg.addColorStop(1,'rgba(249,202,36,0)');
-    ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(sunX,sunY,40,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle='#f9ca24'; ctx.beginPath(); ctx.arc(sunX,sunY,18,0,Math.PI*2); ctx.fill();
-  }
-  // Clouds
-  if(gs.weather.id==='rain') {
-    ctx.fillStyle='rgba(100,120,140,0.6)';
-    for(let i=0;i<4;i++) { drawCloud(50+i*W/4, 30+i%2*20, 60+i*10); }
-  }
-  // Stars for night/winter
-  if(gs.weather.id==='winter') {
-    for(let i=0;i<15;i++) {
-      ctx.fillStyle='rgba(200,220,255,0.8)';
-      ctx.beginPath(); ctx.arc(Math.sin(i*137)*W*0.45+W*0.5, Math.sin(i*97)*H*0.12+H*0.05, 1.5,0,Math.PI*2); ctx.fill();
-    }
-  }
-}
-
-function drawCloud(x,y,r) {
-  ctx.beginPath();
-  ctx.arc(x,y,r*0.5,0,Math.PI*2);
-  ctx.arc(x+r*0.4,y-r*0.2,r*0.4,0,Math.PI*2);
-  ctx.arc(x+r*0.8,y,r*0.45,0,Math.PI*2);
-  ctx.arc(x+r*0.4,y+r*0.2,r*0.35,0,Math.PI*2);
-  ctx.fill();
-}
-
-function drawRain(W,H) {
-  ctx.strokeStyle='rgba(150,200,255,0.3)'; ctx.lineWidth=1;
-  for(let i=0;i<40;i++) {
-    const rx=(Math.sin(i*157.3)*W*0.5+W*0.5+Date.now()*0.05*i%W)%W;
-    const ry=(Date.now()*0.3+i*37)%H;
-    ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx+2,ry+12); ctx.stroke();
-  }
-}
-
-function drawWind(W,H) {
-  ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=2;
-  for(let i=0;i<5;i++) {
-    const wy=H*0.15+i*H*0.04;
-    const off=(Date.now()*0.3+i*100)%W;
-    ctx.beginPath(); ctx.moveTo((off-60)%W,wy); ctx.lineTo((off-20)%W,wy+4); ctx.stroke();
-  }
+  // Cursor tool indicator
+  drawCursorIndicator();
 }
 
 function drawFire(f) {
-  const sz = f.size || 28;
-  // Glow
-  const fg = ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,sz);
-  fg.addColorStop(0,'rgba(255,100,0,0.4)'); fg.addColorStop(1,'rgba(255,50,0,0)');
-  ctx.fillStyle=fg; ctx.beginPath(); ctx.arc(f.x,f.y,sz,0,Math.PI*2); ctx.fill();
-  // Emoji
-  ctx.font=`${sz}px serif`; ctx.textAlign='center';
-  ctx.fillText('🔥',f.x,f.y+sz*0.4);
-  // Intensity badge
-  if(f.intensity>1) {
-    ctx.fillStyle='rgba(231,76,60,0.85)'; ctx.font='bold 10px Inter';
-    ctx.fillText(`×${f.intensity.toFixed(0)}`,f.x+sz*0.5,f.y-sz*0.3);
+  drawFireSprite(ctx, f.x, f.y, f.size, f.frame);
+  if(f.intensity>1.5) {
+    ctx.font='10px Inter'; ctx.fillStyle='#ff6b35'; ctx.textAlign='center';
+    ctx.fillText('!',f.x,f.y-f.size*0.9);
   }
 }
 
 function drawTree(t) {
-  const icons = t.alive ? TREE_STAGES : ['💀'];
-  ctx.font='24px serif'; ctx.textAlign='center';
-  ctx.globalAlpha = t.alive ? 1 : 0.5;
-  ctx.fillText(icons[Math.min(t.stage, icons.length-1)], t.x, t.y+12);
-  ctx.globalAlpha=1;
-  // Growth bar for young trees
-  if(t.alive && t.stage<2) {
-    const pct = t.growTimer/6;
-    ctx.fillStyle='rgba(0,0,0,0.4)';ctx.fillRect(t.x-16,t.y+14,32,5);
-    ctx.fillStyle='#2ecc71';ctx.fillRect(t.x-16,t.y+14,32*pct,5);
+  if(!t.alive) {
+    // Dead/burnt tree
+    ctx.globalAlpha=0.55;
+    ctx.font=`${t.size*0.7}px serif`; ctx.textAlign='center';
+    ctx.fillText('🪵',t.x,t.y+8);
+    ctx.globalAlpha=1;
+    return;
+  }
+  drawTreeSprite(ctx, t.stage, t.x, t.y, t.size);
+  // Growth progress bar for young trees
+  if(t.stage<2) {
+    const bw=32, bh=5;
+    ctx.fillStyle='rgba(0,0,0,0.45)'; ctx.beginPath(); ctx.roundRect(t.x-bw/2,t.y+6,bw,bh,3); ctx.fill();
+    ctx.fillStyle='#2ecc71'; ctx.beginPath(); ctx.roundRect(t.x-bw/2,t.y+6,bw*(t.growTimer/6),bh,3); ctx.fill();
   }
 }
 
 function drawAnimal(a) {
   if(a.rescued) return;
-  ctx.font='24px serif'; ctx.textAlign='center';
-  // Panic animation
-  const bob = a.panic ? Math.sin(Date.now()*0.01)*3 : 0;
-  ctx.fillText(a.icon, a.x, a.y+bob);
-  // Panic indicator
-  if(a.panic) {
-    ctx.font='10px serif'; ctx.fillText('❗', a.x+12, a.y-8);
-  }
+  drawDeerSprite(ctx, a.x, a.y, a.size, deerFrame, a.flipX);
+  // Panic exclamation
+  ctx.font='bold 12px Inter'; ctx.fillStyle='#f9ca24';
+  ctx.textAlign='center'; ctx.fillText('!',a.x,a.y-a.size*0.95);
 }
 
 function drawTrash(t) {
-  ctx.font='22px serif'; ctx.textAlign='center';
-  ctx.fillText(t.icon, t.x, t.y);
+  drawTrashSprite(ctx, t.x, t.y, t.size, t.trashType);
 }
 
-let _cursorX=0, _cursorY=0;
-function drawCursorHint(W,H) {
-  const icons = {plant:'🌱',water:'💧',rescue:'🦌',clean:'🧤'};
-  if(icons[gs.tool]) {
-    ctx.font='18px serif'; ctx.textAlign='left';
-    ctx.globalAlpha=0.7;
-    ctx.fillText(icons[gs.tool], _cursorX+12, _cursorY-4);
-    ctx.globalAlpha=1;
+function drawRain(W,H) {
+  ctx.strokeStyle='rgba(150,200,255,0.28)'; ctx.lineWidth=1.2;
+  const t=Date.now();
+  for(let i=0;i<50;i++) {
+    const rx=(Math.sin(i*157.3)*W*0.5+W*0.5+(t*0.12*((i%3)+1)))%W;
+    const ry=(t*0.35+i*43)%H;
+    ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx+2,ry+14); ctx.stroke();
   }
 }
 
-canvas.addEventListener('mousemove',e=>{_cursorX=e.offsetX;_cursorY=e.offsetY;});
-canvas.addEventListener('touchmove',e=>{
+function drawWind(W,H) {
+  ctx.strokeStyle='rgba(255,255,255,0.07)'; ctx.lineWidth=2;
+  const t=Date.now();
+  for(let i=0;i<6;i++) {
+    const wy=H*0.1+i*H*0.07;
+    const off=(t*0.18+i*80)%W;
+    ctx.beginPath(); ctx.moveTo((off)%W,wy); ctx.lineTo((off+40)%W,wy+5); ctx.stroke();
+  }
+}
+
+function drawSnow(W,H) {
+  ctx.fillStyle='rgba(220,240,255,0.7)';
+  const t=Date.now();
+  for(let i=0;i<30;i++) {
+    const sx=(Math.sin(i*137.5)*W*0.5+W*0.5+(t*0.04+i*3))%W;
+    const sy=(t*0.06+i*28)%H;
+    ctx.beginPath(); ctx.arc(sx,sy,1.5+i%2,0,Math.PI*2); ctx.fill();
+  }
+}
+
+function drawCursorIndicator() {
+  const icons={plant:'🌱',water:'💧',rescue:'🦌',clean:'🧤'};
+  const ic=icons[gs.tool];
+  if(!ic) return;
+  ctx.font='16px serif'; ctx.textAlign='left'; ctx.globalAlpha=0.8;
+  ctx.fillText(ic,curX+14,curY+4);
+  ctx.globalAlpha=1;
+  // Range circle
+  ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.arc(curX,curY,48,0,Math.PI*2); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+// =============================================
+// INPUT
+// =============================================
+canvas.addEventListener('mousemove',e=>{curX=e.offsetX;curY=e.offsetY;});
+canvas.addEventListener('click',handleClick);
+canvas.addEventListener('touchstart',e=>{
   const t=e.touches[0];
-  _cursorX=t.clientX-canvas.offsetLeft;
-  _cursorY=t.clientY-canvas.offsetTop;
+  curX=t.clientX-canvas.getBoundingClientRect().left;
+  curY=t.clientY-canvas.getBoundingClientRect().top;
+  handleClick({offsetX:curX,offsetY:curY});
   e.preventDefault();
 },{passive:false});
 
-// ===========================
-// CLICK / INTERACTION
-// ===========================
-canvas.addEventListener('click', handleCanvasClick);
-canvas.addEventListener('touchstart', e=>{
-  const t=e.touches[0];
-  handleCanvasClick({offsetX:t.clientX-canvas.offsetLeft,offsetY:t.clientY-canvas.offsetTop});
-  e.preventDefault();
-},{passive:false});
-
-function handleCanvasClick(e) {
+function handleClick(e) {
   if(!gs.running||gs.paused) return;
   const cx=e.offsetX, cy=e.offsetY;
-  const H=canvas.height;
-
-  switch(gs.tool) {
-    case 'plant':  handlePlant(cx,cy,H); break;
-    case 'water':  handleWater(cx,cy); break;
-    case 'rescue': handleRescue(cx,cy); break;
-    case 'clean':  handleClean(cx,cy); break;
+  switch(gs.tool){
+    case 'plant':  doPlant(cx,cy); break;
+    case 'water':  doWater(cx,cy); break;
+    case 'rescue': doRescue(cx,cy); break;
+    case 'clean':  doClean(cx,cy); break;
   }
 }
 
-function handlePlant(cx,cy,H) {
-  if(cy < H*0.3) { showNotif('Hanya bisa tanam di tanah!','neg'); return; }
-  if(gs.energy < 10) { showNotif('Energi tidak cukup!','neg'); return; }
-  // Check not too close to fire
-  const nearFire = gs.objects.some(o=>o.type==='fire'&&dist(o.x,o.y,cx,cy)<50);
-  if(nearFire) { showNotif('Terlalu dekat api!','neg'); return; }
-  gs.objects.push(createTree(cx,cy));
-  gs.energy = Math.max(0, gs.energy-10);
-  gs.score += 20; gs.done.trees++;
-  createParticle(cx,cy-20,'+20','#2ecc71');
-  showNotif('🌱 Pohon ditanam!','pos');
-  updateMissionPanel();
+function doPlant(cx,cy) {
+  if(cy < TILE*3.5) { showNotif('Hanya bisa tanam di tanah!','neg'); return; }
+  if(gs.energy<10)  { showNotif('Energi tidak cukup!','neg'); return; }
+  if(gs.objects.some(o=>o.type==='fire'&&dist(o.x,o.y,cx,cy)<52)) { showNotif('Terlalu dekat api! 🔥','neg'); return; }
+  gs.objects.push({id:nextId(),type:'tree',x:cx,y:cy,stage:0,growTimer:0,alive:true,size:56,treeType:Math.floor(Math.random()*6)});
+  gs.energy=Math.max(0,gs.energy-10); gs.score+=20; gs.done.trees++;
+  createParticle(cx,cy-28,'+20 🌱','#2ecc71');
+  showNotif('🌱 Pohon ditanam!','pos'); updateMissionPanel();
 }
 
-function handleWater(cx,cy) {
-  const fire = closestObj(cx,cy,'fire',50);
-  if(!fire) { showNotif('Tidak ada api di sini!','neg'); return; }
-  if(gs.energy < 15) { showNotif('Energi tidak cukup!','neg'); return; }
-  const spd = gs.upgrades.bigTruck ? 2 : 1;
-  fire.intensity -= spd;
-  if(fire.intensity <= 0) {
-    removeObj(fire.id);
-    gs.score += 50; gs.done.fires++;
-    gs.energy = Math.max(0,gs.energy-15);
-    createParticle(cx,cy-20,'+50 Api padam!','#74b9ff');
-    showNotif('💧 Api dipadamkan!','pos');
-    updateMissionPanel();
+function doWater(cx,cy) {
+  const f=closestObj(cx,cy,'fire',56);
+  if(!f) { showNotif('Tidak ada api di sini!','neg'); return; }
+  if(gs.energy<14) { showNotif('Energi tidak cukup!','neg'); return; }
+  const spd=gs.upgrades.bigTruck?2.5:1;
+  f.intensity-=spd;
+  if(f.intensity<=0) {
+    removeObj(f.id); gs.score+=50; gs.done.fires++;
+    gs.energy=Math.max(0,gs.energy-14);
+    createParticle(cx,cy-28,'+50 💧','#74b9ff');
+    showNotif('💧 Api padam!','pos'); updateMissionPanel();
   } else {
-    gs.energy = Math.max(0,gs.energy-8);
+    gs.energy=Math.max(0,gs.energy-8);
     createParticle(cx,cy-20,'💧','#74b9ff',-1);
     showNotif('💧 Api berkurang...','info');
   }
 }
 
-function handleRescue(cx,cy) {
-  const animal = closestObj(cx,cy,'animal',45);
-  if(!animal||animal.rescued) { showNotif('Tidak ada hewan di sini!','neg'); return; }
-  if(gs.energy < 12) { showNotif('Energi tidak cukup!','neg'); return; }
-  animal.rescued = true;
-  gs.score += 40; gs.done.animals++;
-  gs.energy = Math.max(0,gs.energy-12);
-  createParticle(cx,cy-20,'+40 Hewan diselamatkan!','#f9ca24');
-  showNotif(`${animal.icon} Hewan diselamatkan!`,'pos');
+function doRescue(cx,cy) {
+  const a=closestObj(cx,cy,'animal',52);
+  if(!a||a.rescued) { showNotif('Tidak ada hewan di sini!','neg'); return; }
+  if(gs.energy<12) { showNotif('Energi tidak cukup!','neg'); return; }
+  a.rescued=true; gs.score+=40; gs.done.animals++;
+  gs.energy=Math.max(0,gs.energy-12);
+  createParticle(cx,cy-30,'+40 🦌','#f9ca24');
+  showNotif('🦌 Hewan diselamatkan!','pos');
   // Animate to safe zone
-  const startX=animal.x, startY=animal.y;
-  const endX=animal.safeX, endY=animal.safeY;
-  let t2=0;
-  const ani=()=>{t2+=0.04;animal.x=lerp(startX,endX,t2);animal.y=lerp(startY,endY,t2);if(t2<1)requestAnimationFrame(ani);};
-  ani();
+  const sx=a.x,sy=a.y,ex=a.safeX,ey=a.safeY; let t=0;
+  const ani=()=>{t+=0.03;a.x=lerp(sx,ex,t);a.y=lerp(sy,ey,t);a.flipX=ex<sx;if(t<1)requestAnimationFrame(ani);};ani();
   updateMissionPanel();
 }
 
-function handleClean(cx,cy) {
-  const trash = closestObj(cx,cy,'trash',40);
-  if(!trash) { showNotif('Tidak ada sampah di sini!','neg'); return; }
-  if(gs.energy < 5) { showNotif('Energi tidak cukup!','neg'); return; }
-  removeObj(trash.id);
-  gs.score += 10; gs.done.trash++;
-  gs.energy = Math.max(0,gs.energy-(gs.upgrades.fastClean?3:5));
-  createParticle(cx,cy-20,'+10','#a8d5b8');
-  showNotif('🧤 Sampah dibersihkan!','pos');
-  updateMissionPanel();
+function doClean(cx,cy) {
+  const t=closestObj(cx,cy,'trash',48);
+  if(!t) { showNotif('Tidak ada sampah di sini!','neg'); return; }
+  if(gs.energy<5) { showNotif('Energi tidak cukup!','neg'); return; }
+  removeObj(t.id); gs.score+=10; gs.done.trash++;
+  gs.energy=Math.max(0,gs.energy-(gs.upgrades.fastClean?2:5));
+  createParticle(cx,cy-24,'+10 🧤','#a8d5b8');
+  showNotif('🧤 Sampah dibersihkan!','pos'); updateMissionPanel();
 }
 
-// ===========================
+// =============================================
 // HELPERS
-// ===========================
-function dist(x1,y1,x2,y2) { return Math.hypot(x2-x1,y2-y1); }
-function lerp(a,b,t) { return a+(b-a)*Math.min(t,1); }
-function closestObj(cx,cy,type,maxDist) {
-  let best=null, bestD=maxDist;
-  gs.objects.filter(o=>o.type===type).forEach(o=>{
-    const d=dist(o.x,o.y,cx,cy);
-    if(d<bestD){bestD=d;best=o;}
-  });
+// =============================================
+function dist(x1,y1,x2,y2){return Math.hypot(x2-x1,y2-y1);}
+function lerp(a,b,t){return a+(b-a)*Math.min(t,1);}
+function closestObj(cx,cy,type,maxD) {
+  let best=null,bd=maxD;
+  gs.objects.filter(o=>o.type===type).forEach(o=>{const d=dist(o.x,o.y,cx,cy);if(d<bd){bd=d;best=o;}});
   return best;
 }
-function removeObj(id) { gs.objects = gs.objects.filter(o=>o.id!==id); }
+function removeObj(id){gs.objects=gs.objects.filter(o=>o.id!==id);}
+function createParticle(x,y,text,color,dy=-2){particles.push({x,y,text,color,dy,alpha:1});}
 
-// ===========================
+// =============================================
 // HUD
-// ===========================
+// =============================================
 function updateHUD() {
-  document.getElementById('hudScore').textContent = gs.score;
-  document.getElementById('hudEnergy').textContent = Math.floor(gs.energy);
-  document.getElementById('energyFill').style.width = gs.energy+'%';
-  const m = Math.floor(gs.time/60), s = Math.floor(gs.time%60);
-  document.getElementById('hudTimer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
-  const tb = document.getElementById('timerBadge');
-  tb.classList.toggle('urgent', gs.time < 30);
-  // Regen energy slowly
-  gs.energy = Math.min(100, gs.energy + 0.008);
+  document.getElementById('hudScore').textContent=gs.score;
+  document.getElementById('hudEnergy').textContent=Math.floor(gs.energy);
+  document.getElementById('energyFill').style.width=gs.energy+'%';
+  const m=Math.floor(gs.time/60),s=Math.floor(gs.time%60);
+  document.getElementById('hudTimer').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  document.getElementById('timerBadge').classList.toggle('urgent',gs.time<30);
 }
-
-function updateWeatherHUD() {
-  document.getElementById('hudWeather').textContent = gs.weather.icon;
-  document.getElementById('hudWeatherName').textContent = gs.weather.name;
+function updateWeatherHUD(){
+  document.getElementById('hudWeatherIcon').textContent=gs.weather.icon;
+  document.getElementById('hudWeatherName').textContent=gs.weather.name;
 }
-
 function buildMissionPanel(lv) {
-  const list = document.getElementById('missionList');
-  list.innerHTML = `
-    <div class="mission-item" id="mi-trees">
-      <span class="micon">🌳</span><span>Pohon ditanam</span>
-      <span class="mprog">0/${lv.targets.trees}</span>
-    </div>
-    <div class="mission-item" id="mi-fires">
-      <span class="micon">💧</span><span>Api dipadamkan</span>
-      <span class="mprog">0/${lv.targets.fires}</span>
-    </div>
-    <div class="mission-item" id="mi-animals">
-      <span class="micon">🦌</span><span>Hewan diselamatkan</span>
-      <span class="mprog">0/${lv.targets.animals}</span>
-    </div>
-    <div class="mission-item" id="mi-trash">
-      <span class="micon">🧤</span><span>Sampah dibersihkan</span>
-      <span class="mprog">0/${lv.targets.trash}</span>
-    </div>`;
+  document.getElementById('missionList').innerHTML=`
+    <div class="mission-item" id="mi-trees"><span class="micon">🌳</span><span>Pohon ditanam</span><span class="mprog">0/${lv.targets.trees}</span></div>
+    <div class="mission-item" id="mi-fires"><span class="micon">💧</span><span>Api dipadamkan</span><span class="mprog">0/${lv.targets.fires}</span></div>
+    <div class="mission-item" id="mi-animals"><span class="micon">🦌</span><span>Hewan selamat</span><span class="mprog">0/${lv.targets.animals}</span></div>
+    <div class="mission-item" id="mi-trash"><span class="micon">🧤</span><span>Sampah bersih</span><span class="mprog">0/${lv.targets.trash}</span></div>`;
 }
-
 function updateMissionPanel() {
-  const t = gs.level.targets;
-  function upd(id,done,total) {
-    const el=document.getElementById(id);
-    if(!el) return;
+  const t=gs.level.targets;
+  [['mi-trees',gs.done.trees,t.trees],['mi-fires',gs.done.fires,t.fires],
+   ['mi-animals',gs.done.animals,t.animals],['mi-trash',gs.done.trash,t.trash]].forEach(([id,done,total])=>{
+    const el=document.getElementById(id); if(!el) return;
     el.querySelector('.mprog').textContent=`${Math.min(done,total)}/${total}`;
-    el.classList.toggle('done', done>=total);
-  }
-  upd('mi-trees',gs.done.trees,t.trees);
-  upd('mi-fires',gs.done.fires,t.fires);
-  upd('mi-animals',gs.done.animals,t.animals);
-  upd('mi-trash',gs.done.trash,t.trash);
+    el.classList.toggle('done',done>=total);
+  });
 }
 
-// ===========================
+// =============================================
 // UPGRADES
-// ===========================
-function buildUpgradePanel() {
-  const list = document.getElementById('upgList');
-  list.innerHTML = UPGRADES.map(u=>`
-    <div class="upg-item" id="upg-${u.id}" onclick="buyUpgrade('${u.id}',${u.cost})">
-      <span class="upg-icon">${u.icon}</span>
-      <span class="upg-name">${u.name}</span>
-      <span class="upg-cost">⚡${u.cost}</span>
+// =============================================
+function buildUpgradePanel(){
+  document.getElementById('upgList').innerHTML=UPGRADES.map(u=>
+    `<div class="upg-item" id="upg-${u.id}" onclick="buyUpgrade('${u.id}',${u.cost})">
+      <span class="ui-icon">${u.icon}</span><span class="ui-name">${u.name}</span><span class="ui-cost">⚡${u.cost}</span>
     </div>`).join('');
 }
-
-function buyUpgrade(id, cost) {
-  if(gs.upgrades[id]) { showNotif('Sudah dibeli!','info'); return; }
-  if(gs.energy < cost) { showNotif('Energi tidak cukup!','neg'); return; }
-  gs.energy -= cost; gs.upgrades[id] = true;
-  const upg = UPGRADES.find(u=>u.id===id);
-  showNotif(`${upg.icon} ${upg.name} aktif!`,'pos');
-  const el = document.getElementById(`upg-${id}`);
-  if(el) { el.classList.add('bought'); el.querySelector('.upg-cost').textContent='✓'; }
+function buyUpgrade(id,cost){
+  if(gs.upgrades[id]){showNotif('Sudah dibeli!','info');return;}
+  if(gs.energy<cost){showNotif('Energi tidak cukup!','neg');return;}
+  gs.energy-=cost; gs.upgrades[id]=true;
+  const u=UPGRADES.find(x=>x.id===id);
+  showNotif(`${u.icon} ${u.name} aktif!`,'pos');
+  const el=document.getElementById(`upg-${id}`);
+  if(el){el.classList.add('bought');el.querySelector('.ui-cost').textContent='✓';}
 }
+function toggleUpgradePanel(){document.getElementById('upgrade-panel').classList.toggle('show');}
 
-function toggleUpgradePanel() {
-  const panel = document.getElementById('upgrade-panel');
-  panel.classList.toggle('show');
-}
-
-// ===========================
-// TOOL SELECT
-// ===========================
-function selectTool(t) {
-  gs.tool = t;
+// =============================================
+// TOOL
+// =============================================
+function selectTool(t){
+  gs.tool=t;
   document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tool-'+t)?.classList.add('active');
   document.getElementById('upgrade-panel')?.classList.remove('show');
 }
 
-// ===========================
+// =============================================
 // NOTIFICATIONS
-// ===========================
-const notifWrap = document.getElementById('notif-wrap');
-const notifQueue = [];
-let notifActive = 0;
-function showNotif(msg,type='info') {
-  if(notifActive>=3) return;
-  notifActive++;
+// =============================================
+let _notifCount=0;
+function showNotif(msg,type='info'){
+  if(_notifCount>=3) return; _notifCount++;
   const el=document.createElement('div');
-  el.className=`notif ${type}`;
-  el.innerHTML=`<span>${msg}</span>`;
-  notifWrap.appendChild(el);
-  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity 0.3s'; setTimeout(()=>{el.remove();notifActive--;},300); },2000);
+  el.className=`notif ${type}`; el.innerHTML=`<span>${msg}</span>`;
+  document.getElementById('notif-wrap').appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity 0.3s';
+    setTimeout(()=>{el.remove();_notifCount--;},300);},2000);
 }
 
-// ===========================
-// WIN/LOSE
-// ===========================
-function checkWin() {
-  const t = gs.level.targets;
-  if(gs.done.trees>=t.trees && gs.done.fires>=t.fires && gs.done.animals>=t.animals && gs.done.trash>=t.trash) {
-    endLevel(true);
-  }
+// =============================================
+// WIN / LOSE
+// =============================================
+function checkWin(){
+  const t=gs.level.targets;
+  if(gs.done.trees>=t.trees&&gs.done.fires>=t.fires&&gs.done.animals>=t.animals&&gs.done.trash>=t.trash) endLevel(true);
 }
-
-function endLevel(win=false) {
-  gs.running = false;
-  const t = gs.level.targets;
-  const total = t.trees+t.fires+t.animals+t.trash;
-  const done = gs.done.trees+gs.done.fires+gs.done.animals+gs.done.trash;
-  const pct = done/total;
-  const stars = win ? 3 : pct>=0.7 ? 2 : pct>=0.4 ? 1 : 0;
-
-  // Save
-  const prevStars = saveData.stars[gs.currentLevel]||0;
-  saveData.stars[gs.currentLevel] = Math.max(prevStars,stars);
-  if(stars>=1 && !saveData.unlockedLevels.includes(gs.currentLevel+1) && gs.currentLevel<10) {
-    saveData.unlockedLevels.push(gs.currentLevel+1);
-  }
-  saveProg();
-
-  if(stars>=1) showCompleteScreen(stars);
-  else showGameOver();
+function endLevel(win=false){
+  gs.running=false;
+  const t=gs.level.targets;
+  const total=t.trees+t.fires+t.animals+t.trash;
+  const done=gs.done.trees+gs.done.fires+gs.done.animals+gs.done.trash;
+  const pct=done/total;
+  const stars=win?3:pct>=0.7?2:pct>=0.4?1:0;
+  save.stars[gs.currentLevel]=Math.max(save.stars[gs.currentLevel]||0,stars);
+  if(stars>=1&&!save.unlocked.includes(gs.currentLevel+1)&&gs.currentLevel<10) save.unlocked.push(gs.currentLevel+1);
+  saveGame();
+  if(stars>=1) showComplete(stars); else showGameOver();
 }
-
-function showCompleteScreen(stars) {
-  const ov = document.getElementById('completeOverlay');
-  document.getElementById('completeIcon').textContent = stars===3?'🌟':'🏆';
-  document.getElementById('completeTitle').textContent = stars===3?'LUAR BIASA!':'MISI SELESAI!';
-  document.getElementById('completeStars').textContent = '⭐'.repeat(stars)+'☆'.repeat(3-stars);
-  document.getElementById('completeSCore').textContent = gs.score;
-  const msgs=['Terus berjuang!','Bagus! Alam membaik!','Sempurna! Kamu penyelamat sejati alam! 🌿'];
-  document.getElementById('completeMsg').textContent = msgs[stars-1]||'';
-  document.getElementById('btnNextLevel').style.display = gs.currentLevel>=10?'none':'inline-flex';
+function showComplete(stars){
+  const ov=document.getElementById('completeOverlay');
+  document.getElementById('completeIcon').textContent=stars===3?'🌟':'🏆';
+  document.getElementById('completeTitle').textContent=stars===3?'LUAR BIASA!':'MISI SELESAI!';
+  document.getElementById('completeStars').textContent='⭐'.repeat(stars)+'☆'.repeat(3-stars);
+  document.getElementById('completeSCore').textContent=gs.score;
+  document.getElementById('completeMsg').textContent=['','Terus berjuang!','Bagus sekali! Alam membaik!','Sempurna! Kamu penyelamat alam sejati! 🌿'][stars];
+  document.getElementById('btnNextLevel').style.display=gs.currentLevel>=10?'none':'inline-block';
   ov.classList.remove('hidden');
 }
-
-function showGameOver() {
-  document.getElementById('gameoverScore').textContent = gs.score;
+function showGameOver(){
+  document.getElementById('gameoverScore').textContent=gs.score;
   document.getElementById('gameoverOverlay').classList.remove('hidden');
 }
+function hideAllPopups(){['pauseOverlay','completeOverlay','gameoverOverlay'].forEach(id=>document.getElementById(id).classList.add('hidden'));}
+function nextLevel(){if(gs.currentLevel<10)startLevel(gs.currentLevel+1);else exitGame();}
+function restartLevel(){startLevel(gs.currentLevel);}
+function exitGame(){gs.running=false;hideAllPopups();showScreen('level-select');}
+function togglePause(){
+  gs.paused=!gs.paused;
+  document.getElementById('pauseOverlay').classList.toggle('hidden',!gs.paused);
+  document.getElementById('btnPause').textContent=gs.paused?'▶ Lanjut':'⏸ Pause';
+  if(!gs.paused){gs.lastTime=performance.now();requestAnimationFrame(gameLoop);}
+}
 
-function hideAllPopups() {
-  ['pauseOverlay','completeOverlay','gameoverOverlay'].forEach(id=>{
-    document.getElementById(id).classList.add('hidden');
+// =============================================
+// SCREENS & LEVEL SELECT
+// =============================================
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  if(id==='level-select') buildLevelGrid();
+  if(id==='menu') startMenuAnimation();
+}
+function buildLevelGrid(){
+  const grid=document.getElementById('levelGrid'); grid.innerHTML='';
+  LEVELS.forEach(lv=>{
+    const unlocked=save.unlocked.includes(lv.id);
+    const stars=save.stars[lv.id]||0;
+    const card=document.createElement('div');
+    card.className='level-card'+(unlocked?'':' locked');
+    card.innerHTML=unlocked
+      ?`<div style="font-size:22px">${lv.icon}</div>
+        <div class="lnum">${lv.id}</div>
+        <div class="lname">${lv.name}</div>
+        <div class="lstars">${'⭐'.repeat(stars)+'☆'.repeat(3-stars)}</div>`
+      :`<div style="font-size:24px">🔒</div><div class="lname">Level ${lv.id}</div>`;
+    if(unlocked) card.onclick=()=>startLevel(lv.id);
+    grid.appendChild(card);
   });
 }
 
-function nextLevel() {
-  if(gs.currentLevel<10) startLevel(gs.currentLevel+1);
-  else exitGame();
-}
+// =============================================
+// MENU ANIMATION (procedural trees on canvas)
+// =============================================
+let menuAnimFrame = null;
+function startMenuAnimation(){
+  const mc = document.getElementById('menuCanvas');
+  if (!mc) return;
+  mc.width  = window.innerWidth;
+  mc.height = window.innerHeight;
+  const mx = mc.getContext('2d');
 
-function restartLevel() { startLevel(gs.currentLevel); }
-
-function exitGame() {
-  gs.running = false;
-  hideAllPopups();
-  showScreen('level-select');
-}
-
-function togglePause() {
-  gs.paused = !gs.paused;
-  document.getElementById('pauseOverlay').classList.toggle('hidden', !gs.paused);
-  document.getElementById('btnPause').textContent = gs.paused?'▶ Lanjut':'⏸ Pause';
-  if(!gs.paused) { gs.lastTime=performance.now(); requestAnimationFrame(gameLoop); }
-}
-
-// ===========================
-// INIT TREES ON MENU
-// ===========================
-function initMenuTrees() {
-  const cont = document.getElementById('menuBgTrees');
-  const W = window.innerWidth;
-  for(let i=0;i<12;i++) {
-    const el=document.createElement('div');
-    const h=80+Math.random()*120, w=h*0.7;
-    el.className='tree-silhouette';
-    el.style.cssText=`left:${i*(W/12)+Math.random()*30}px;border-left-width:${w/2}px;border-right-width:${w/2}px;border-bottom-width:${h}px;border-bottom-color:${i%3===0?'#0d2a18':'#142e1a'};`;
-    cont.appendChild(el);
+  // Scatter trees across the lower portion of the menu
+  const trees = [];
+  for (let i = 0; i < 16; i++) {
+    trees.push({
+      x: Math.random() * mc.width,
+      y: mc.height * 0.5 + Math.random() * mc.height * 0.5,
+      s: 40 + Math.random() * 60,
+      phase: Math.random() * Math.PI * 2,
+    });
   }
-}
-initMenuTrees();
 
-// Start at menu
-showScreen('menu');
+  if (menuAnimFrame) cancelAnimationFrame(menuAnimFrame);
+
+  // Pick the cleaned image (transparent background) if available
+  function getTreeSrc() {
+    return ASSETS_CLEAN.trees || ASSETS.trees || null;
+  }
+
+  function loop() {
+    // Fill canvas opaque so NO transparent/checkered areas can appear
+    mx.fillStyle = '#0d1a08';
+    mx.fillRect(0, 0, mc.width, mc.height);
+
+    // Sky gradient (top half)
+    const sg = mx.createLinearGradient(0, 0, 0, mc.height * 0.52);
+    sg.addColorStop(0, 'rgba(6,14,23,0.98)');
+    sg.addColorStop(1, 'rgba(15,40,10,0)');
+    mx.fillStyle = sg; mx.fillRect(0, 0, mc.width, mc.height * 0.52);
+
+    // Ground gradient (lower half)
+    const gg = mx.createLinearGradient(0, mc.height * 0.45, 0, mc.height);
+    gg.addColorStop(0, '#1d4a0f');
+    gg.addColorStop(1, '#0a1e05');
+    mx.fillStyle = gg;
+    mx.fillRect(0, mc.height * 0.45, mc.width, mc.height * 0.55);
+
+    // Draw procedural trees (no sprite = no background issue)
+    trees.forEach((t, i) => {
+      t.phase += 0.004;
+      const sway = Math.sin(t.phase) * 5;
+      ctx.save ? 0 : 0; // safe guard
+      mx.save();
+      mx.translate(t.x + sway, t.y);
+      mx.globalAlpha = 0.65 + (i % 3) * 0.12;
+      drawTreeSprite(mx, 2, 0, 0, t.s);
+      mx.globalAlpha = 1;
+      mx.restore();
+    });
+
+    menuAnimFrame = requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+// =============================================
+// RESIZE
+// =============================================
+function resizeCanvas(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  if(mapData) mapData=generateMap(canvas.width,canvas.height);
+}
+window.addEventListener('resize',()=>{if(gs.running)resizeCanvas();});
+
+// =============================================
+// HOW TO PLAY
+// =============================================
+function showHowTo(){
+  const popup=document.createElement('div');
+  popup.className='popup-overlay'; popup.style.zIndex='100';
+  popup.innerHTML=`
+    <div class="popup-box" style="max-width:500px;max-height:82vh;overflow-y:auto;text-align:left">
+      <div class="popup-title" style="text-align:center;margin-bottom:14px">📖 CARA BERMAIN</div>
+      <div style="font-size:12.5px;color:#c8a97a;line-height:2.1">
+        <strong style="color:#f9ca24">🌱 Menanam Pohon</strong><br>
+        Pilih tool Tanam → klik tanah (bukan air/langit). Pohon tumbuh dari bibit→muda→dewasa. Gunakan energi.<br><br>
+        <strong style="color:#e17055">💧 Memadamkan Api</strong><br>
+        Pilih tool Padamkan → klik dekat api. Api menyebar makin cepat saat angin! Perlu beberapa klik untuk api besar.<br><br>
+        <strong style="color:#f9ca24">🦌 Menyelamatkan Satwa</strong><br>
+        Pilih tool Selamatkan → klik hewan yang panik (ada tanda !). Mereka otomatis menuju zona aman.<br><br>
+        <strong style="color:#2ecc71">🧤 Membersihkan Sampah</strong><br>
+        Pilih tool Bersihkan → klik sampah. Upgrade "Alat Cepat" mengurangi penggunaan energi.<br><br>
+        <strong style="color:#74b9ff">⚡ Energi</strong><br>
+        Setiap aksi butuh energi. Energi pulih perlahan. Beli upgrade untuk efisiensi lebih baik.<br><br>
+        <strong style="color:#a29bfe">🌤 Sistem Cuaca</strong><br>
+        ☀️ Cerah: pohon tumbuh cepat | 🌧️ Hujan: api padam sendiri | 🌪️ Angin: api menyebar gila!<br><br>
+        <strong style="color:#fd79a8">🎯 Bintang</strong><br>
+        Semua target tercapai → ⭐⭐⭐ | Sebagian → ⭐⭐ | Minimal → ⭐ | Gagal → 💔
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <button class="btn btn-green" onclick="this.closest('.popup-overlay').remove()">SIAP BERMAIN!</button>
+      </div>
+    </div>`;
+  document.body.appendChild(popup);
+}
+
+// =============================================
+// BOOTSTRAP
+// =============================================
+loadAssets(()=>{
+  document.getElementById('loading-overlay').style.opacity='0';
+  document.getElementById('loading-overlay').style.transition='opacity 0.5s';
+  setTimeout(()=>{ document.getElementById('loading-overlay').style.display='none'; showScreen('menu'); },500);
+});
 </script>
 </body>
 </html>
